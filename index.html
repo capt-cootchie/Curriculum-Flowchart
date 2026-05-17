@@ -1,0 +1,2543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curriculum Flowcharts — Math through Synthesis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']]},
+  svg: {fontCache: 'global'},
+  chtml: {scale: 0.95}
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --bg-elev: #14141a;
+    --bg-elev-2: #1c1c25;
+    --ink: #e8e2d4;
+    --ink-dim: #9a9485;
+    --ink-faint: #5a5648;
+    --accent: #c9a961;
+    --accent-dim: #8a7440;
+    --rule: #2a2a35;
+    --primary: #d4af37;
+    --primary-soft: #f4e4a0;
+    --alt: #b8a584;
+    --backup: #6e6855;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse at top, rgba(201, 169, 97, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(60, 50, 30, 0.15), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 40px 100px;
+  }
+
+  header {
+    text-align: center;
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  header::before {
+    content: "";
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  header::after {
+    content: "✦";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg);
+    color: var(--accent);
+    padding: 0 20px;
+    font-size: 14px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    color: var(--primary-soft);
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 16px;
+  }
+
+  .lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--ink-dim);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin: 80px 0 60px;
+    padding: 40px;
+    background: var(--bg-elev);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+  }
+
+  .toc-item {
+    text-align: center;
+    padding: 24px 16px;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--rule);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .toc-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .toc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--primary-soft);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .toc-desc {
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    line-height: 1.5;
+  }
+
+  section {
+    margin: 100px 0;
+    scroll-margin-top: 40px;
+  }
+
+  .section-header {
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 2.8rem;
+    color: var(--primary-soft);
+    line-height: 1.1;
+  }
+
+  h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .section-intro {
+    font-style: italic;
+    color: var(--ink-dim);
+    margin-top: 16px;
+    font-size: 1.1rem;
+    max-width: 800px;
+  }
+
+  .mermaid {
+    background: var(--bg-elev);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 30px 20px;
+    margin: 30px 0;
+    overflow-x: auto;
+    text-align: center;
+  }
+
+  .track-detail {
+    margin: 50px 0;
+    background: var(--bg-elev);
+    border-left: 2px solid var(--accent);
+    padding: 32px 36px;
+  }
+
+  .track-header {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .track-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.8rem;
+    color: var(--primary-soft);
+  }
+
+  .track-desc {
+    font-style: italic;
+    color: var(--ink-dim);
+    font-size: 1rem;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  .book-group {
+    margin: 24px 0;
+  }
+
+  .book-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  .book-cluster {
+    background: var(--bg-elev-2);
+    padding: 18px 22px;
+    margin: 12px 0;
+    border-left: 3px solid var(--primary);
+  }
+
+  .book-primary {
+    font-size: 1.15rem;
+    color: var(--primary-soft);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .book-primary em { color: var(--primary); font-style: italic; }
+
+  .book-note {
+    font-size: 0.9rem;
+    color: var(--ink-dim);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  .book-alternatives {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dotted var(--rule);
+    padding-left: 14px;
+  }
+
+  .book-alt {
+    font-size: 0.95rem;
+    color: var(--alt);
+    padding: 3px 0;
+    line-height: 1.5;
+  }
+
+  .book-alt em { font-style: italic; color: var(--alt); }
+
+  .book-alt::before {
+    content: "→ ";
+    color: var(--accent-dim);
+    margin-right: 4px;
+  }
+
+  .legend {
+    margin: 30px 0 50px;
+    padding: 24px 30px;
+    background: var(--bg-elev);
+    border: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .legend-swatch {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .legend-primary {
+    background: var(--primary);
+    border-left: 3px solid var(--primary-soft);
+  }
+
+  .legend-alt {
+    background: var(--alt);
+    opacity: 0.6;
+  }
+
+  /* Papers section */
+  .papers-block {
+    margin: 30px 0;
+    background: var(--bg-elev-2);
+    border-left: 3px solid var(--accent);
+    padding: 24px 28px;
+  }
+  .papers-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .paper {
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--rule);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .paper:last-child { border-bottom: none; }
+  .paper-authors { color: var(--primary-soft); font-weight: 500; }
+  .paper-title { color: var(--ink); font-style: italic; }
+  .paper-venue { color: var(--ink-dim); font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+  .paper-note { color: var(--ink-dim); font-style: italic; font-size: 0.9em; display: block; margin-top: 4px; }
+
+  /* Formula and constants blocks */
+  .ref-block {
+    margin: 24px 0;
+    background: var(--bg-elev-2);
+    border-left: 3px solid var(--primary);
+    padding: 24px 28px;
+    overflow-x: auto;
+  }
+  .ref-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .formula-row {
+    padding: 10px 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    align-items: center;
+    border-bottom: 1px dotted var(--rule);
+    font-size: 0.95rem;
+  }
+  .formula-row:last-child { border-bottom: none; }
+  .formula-name { color: var(--primary-soft); font-style: italic; }
+  .formula-expr { color: var(--ink); overflow-x: auto; }
+  .formula-expr mjx-container { color: var(--ink) !important; }
+
+  @media (max-width: 700px) {
+    .formula-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  /* Art diagram blocks */
+  .diagram-block {
+    margin: 36px 0;
+    background: var(--bg-elev);
+    border: 1px solid var(--rule);
+    padding: 32px;
+    text-align: center;
+  }
+  .diagram-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .diagram-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--primary-soft);
+    margin-bottom: 20px;
+  }
+  .diagram-svg {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+  }
+  .diagram-caption {
+    font-style: italic;
+    color: var(--ink-dim);
+    font-size: 0.9rem;
+    margin-top: 16px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+  .diagram-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .diagram-grid .diagram-block { margin: 0; padding: 20px; }
+
+  .closing {
+    margin-top: 80px;
+    padding: 50px 40px;
+    background: var(--bg-elev);
+    border: 1px solid var(--rule);
+    text-align: center;
+  }
+
+  .closing p {
+    font-style: italic;
+    color: var(--ink-dim);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .closing p + p {
+    margin-top: 16px;
+  }
+
+  @media (max-width: 900px) {
+    .toc {
+      grid-template-columns: 1fr;
+    }
+    .container {
+      padding: 30px 20px 60px;
+    }
+    h1 {
+      font-size: 2.5rem;
+    }
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  /* Scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <div class="subtitle">Curriculum · Visualization · A Map in Three Parts</div>
+  <h1>The <em>Path</em></h1>
+  <p class="lead">From elementary mathematics through the synthesis project, and a full art curriculum with daily-use visual reference. A flow-mapping of four roadmaps — core academia, specialized physics tracks, the wider reading that feeds the work, and the art path with its diagrams.</p>
+</header>
+
+<div class="toc">
+  <a class="toc-item" href="#part1">
+    <div class="toc-num">PART · I</div>
+    <div class="toc-title">Core Roadmap</div>
+    <div class="toc-desc">Math foundations → Quantum mechanics</div>
+  </a>
+  <a class="toc-item" href="#part2">
+    <div class="toc-num">PART · II</div>
+    <div class="toc-title">Supplemental Tracks</div>
+    <div class="toc-desc">Twenty-four specialized paths</div>
+  </a>
+  <a class="toc-item" href="#part3">
+    <div class="toc-num">PART · III</div>
+    <div class="toc-title">Synthesis Reading</div>
+    <div class="toc-desc">Philosophy · esoterica · culture</div>
+  </a>
+  <a class="toc-item" href="#part4">
+    <div class="toc-num">PART · IV</div>
+    <div class="toc-title">Art Curriculum & Reference</div>
+    <div class="toc-desc">Path, books, color wheels, anatomy</div>
+  </a>
+</div>
+
+<div style="margin: 40px 0 60px; padding: 32px 40px; background: var(--bg-elev-2); border-left: 3px solid var(--primary); border-radius: 2px;">
+  <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--primary); margin-bottom: 12px;">Pacing</div>
+  <h3 style="color: var(--primary-soft); font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 500; margin-bottom: 16px;">Realistic-pace calendars are the default.</h3>
+  <p style="line-height: 1.7; color: var(--ink); margin-bottom: 12px;">Each track is paced at 5-7 hours/week, the rate at which a working autodidact actually internalizes material rather than skimming. Math is 134 weeks (~2.6 years, including Velleman proof bridge, Fleisch tensors, Farlow PDEs, Needham complex analysis, and Shankar Ch.1 as Dirac-notation bridge). Drawing is 95 weeks. Painting is 130 weeks. Comics/Animation is 100 weeks. Metamaterials is 90 weeks. Twenty-three specialized tracks (A-X, minus skipped letters) range from 20-50 weeks depending on depth. New tracks Q-X close architectural gaps in probability, stat mech, programming, relativity, CS, biology, music, and philosophy of science.</p>
+  <p style="line-height: 1.7; color: var(--ink-dim); font-style: italic;">At 10 hours/week total study time, run 1-2 tracks at a time. Three tracks adds 80-100% to each timeline. Four or more produces superficial progress on everything. The calendar files (.ics) live alongside this document — import only what you're actively running. See <em>HOW_TO_USE_CURRICULUM_SYSTEM.md</em> for the full activation logic.</p>
+</div>
+
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-swatch legend-primary"></div>
+    <div>Primary recommendation (start here)</div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch legend-alt"></div>
+    <div>Strong alternatives and backups (clustered)</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PART I — CORE ROADMAP -->
+<!-- ============================================================ -->
+
+<section id="part1">
+  <div class="section-header">
+    <div class="section-num">PART · I</div>
+    <h2>The <em>Core</em> Path</h2>
+    <p class="section-intro">Mathematics from elementary algebra through differential equations, then physics from Newtonian mechanics through quantum mechanics. Everything else builds on this spine. Read top to bottom.</p>
+  </div>
+
+  <div class="mermaid">
+flowchart TD
+    classDef stage fill:#1c1c25,stroke:#c9a961,color:#f4e4a0,stroke-width:2px
+    classDef physics fill:#1c1c25,stroke:#d4af37,color:#f4e4a0,stroke-width:2px
+
+    S1["STAGE 1<br/>Arithmetic & Algebra<br/><br/>Gelfand · Algebra"]
+    S2["STAGE 2<br/>Geometry & Trigonometry<br/><br/>Kiselev · Geometry I<br/>Gelfand · Trigonometry"]
+    S3["STAGE 3<br/>Precalculus<br/><br/>Axler · Precalculus"]
+    S4["STAGE 4<br/>Single-Variable Calculus<br/><br/>Spivak · Calculus"]
+    S5["STAGE 5<br/>Linear Algebra<br/><br/>Axler · LA Done Right"]
+    S6["STAGE 6<br/>Multivariable & Vector Calc<br/><br/>Apostol · Calculus Vol II"]
+    S7["STAGE 7<br/>Differential Equations<br/><br/>Boyce & DiPrima"]
+    S8["STAGE 8<br/>Math Methods Bridge<br/><br/>Boas · Math Methods"]
+    S9["STAGE 9<br/>Introductory Physics<br/><br/>Halliday Resnick Krane<br/>Feynman Lectures"]
+    S10["STAGE 10<br/>Classical Mechanics<br/><br/>Taylor · Classical Mechanics"]
+    S11["STAGE 11<br/>Electromagnetism<br/><br/>Griffiths · Electrodynamics"]
+    S12["STAGE 12<br/>Thermodynamics & Stat Mech<br/><br/>Schroeder · Thermal Physics"]
+    S13["STAGE 13<br/>Special Relativity<br/><br/>Taylor & Wheeler · Spacetime"]
+    S14["STAGE 14<br/>Quantum Mechanics<br/><br/>Griffiths · QM"]
+
+    S1 --> S2 --> S3 --> S4
+    S4 --> S5
+    S5 --> S6
+    S6 --> S7
+    S7 --> S8
+    S8 --> S9
+    S9 --> S10
+    S10 --> S11
+    S11 --> S12
+    S12 --> S13
+    S13 --> S14
+
+    class S1,S2,S3,S4,S5,S6,S7,S8 stage
+    class S9,S10,S11,S12,S13,S14 physics
+  </div>
+
+  <h3 style="margin-top: 60px; margin-bottom: 24px; color: var(--primary-soft);">The Books — Clustered</h3>
+
+  <div class="book-group">
+    <div class="book-group-label">Mathematics — Stages 1 through 8</div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Algebra</em> — I.M. Gelfand</div>
+      <div class="book-note">Short, deep, builds real mathematical thinking</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Basic Mathematics</em> — Serge Lang</div>
+        <div class="book-alt"><em>College Algebra</em> — Stitz & Zeager (free)</div>
+        <div class="book-alt"><em>Kiselev's Arithmetic</em> — A.P. Kiselev</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Trigonometry</em> — I.M. Gelfand</div>
+      <div class="book-note">Pairs with Gelfand's Algebra</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Kiselev's Geometry Book I: Planimetry</em> — the gem of the Russian tradition</div>
+        <div class="book-alt"><em>Kiselev's Geometry Book II: Stereometry</em></div>
+        <div class="book-alt"><em>Geometry</em> — Moise & Downs</div>
+        <div class="book-alt"><em>Geometry: A High School Course</em> — Lang & Murrow</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Precalculus: A Prelude to Calculus</em> — Sheldon Axler</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Precalculus Mathematics in a Nutshell</em> — Simmons</div>
+        <div class="book-alt"><em>Precalculus</em> — Sullivan</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Calculus</em> — Michael Spivak</div>
+      <div class="book-note">The gold standard for understanding</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Calculus Vol. 1</em> — Apostol — more rigorous, integrates LA early</div>
+        <div class="book-alt"><em>Calculus: Early Transcendentals</em> — Stewart — easier, standard</div>
+        <div class="book-alt"><em>Thomas' Calculus</em></div>
+        <div class="book-alt"><em>Calculus</em> — Strang (free, MIT OCW)</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Linear Algebra Done Right</em> — Sheldon Axler</div>
+      <div class="book-note">Best for understanding</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Introduction to Linear Algebra</em> — Strang — best for computation</div>
+        <div class="book-alt"><em>Linear Algebra</em> — Friedberg/Insel/Spence</div>
+        <div class="book-alt"><em>Linear Algebra</em> — Hoffman & Kunze — classic, terse</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Calculus Vol. 2</em> — Tom M. Apostol</div>
+      <div class="book-note">Multivariable + linear algebra integrated</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Vector Calculus, Linear Algebra, and Differential Forms</em> — Hubbard & Hubbard</div>
+        <div class="book-alt"><em>Vector Calculus</em> — Marsden & Tromba</div>
+        <div class="book-alt"><em>Div, Grad, Curl, and All That</em> — Schey — short E&M companion</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Elementary Differential Equations</em> — Boyce & DiPrima</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Ordinary Differential Equations</em> — Tenenbaum & Pollard (Dover)</div>
+        <div class="book-alt"><em>Nonlinear Dynamics and Chaos</em> — Strogatz</div>
+        <div class="book-alt"><em>Differential Equations with Applications and Historical Notes</em> — Simmons</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Mathematical Methods in the Physical Sciences</em> — Mary L. Boas</div>
+      <div class="book-note">The standard, accessible bridge to physics</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Mathematical Methods for Physics and Engineering</em> — Riley/Hobson/Bence</div>
+        <div class="book-alt"><em>Mathematical Methods for Physicists</em> — Arfken/Weber/Harris</div>
+        <div class="book-alt"><em>Mathematical Physics</em> — Hassani</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="book-group">
+    <div class="book-group-label">Physics — Stages 9 through 14</div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Physics</em> Vols. 1 & 2 — Halliday/Resnick/Krane (older editions)</div>
+      <div class="book-note">Plus Feynman Lectures (free at feynmanlectures.caltech.edu) as narrative spine</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>An Introduction to Mechanics</em> — Kleppner & Kolenkow — harder but worth it</div>
+        <div class="book-alt"><em>Electricity and Magnetism</em> — Purcell & Morin — best intro E&M</div>
+        <div class="book-alt"><em>University Physics</em> — Young & Freedman — easier mainstream</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Classical Mechanics</em> — John R. Taylor</div>
+      <div class="book-note">Best modern intro</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Introduction to Classical Mechanics</em> — Morin — heavy on problems</div>
+        <div class="book-alt"><em>Classical Dynamics</em> — Marion & Thornton</div>
+        <div class="book-alt"><em>Classical Mechanics</em> — Goldstein/Poole/Safko — graduate standard</div>
+        <div class="book-alt"><em>Mechanics</em> — Landau & Lifshitz Vol. 1</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Introduction to Electrodynamics</em> — David J. Griffiths</div>
+      <div class="book-note">Universal undergraduate text</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Modern Electrodynamics</em> — Zangwill</div>
+        <div class="book-alt"><em>Classical Electrodynamics</em> — Jackson — brutal but definitive</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>An Introduction to Thermal Physics</em> — Daniel V. Schroeder</div>
+      <div class="book-note">By far the friendliest treatment</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Concepts in Thermal Physics</em> — Blundell & Blundell</div>
+        <div class="book-alt"><em>Fundamentals of Statistical and Thermal Physics</em> — Reif</div>
+        <div class="book-alt"><em>Statistical Physics of Particles & Fields</em> — Kardar</div>
+        <div class="book-alt"><em>Statistical Mechanics</em> — Pathria & Beale</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Spacetime Physics</em> — Taylor & Wheeler</div>
+      <div class="book-note">Classic intuition-builder</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Special Relativity for the Enthusiastic Beginner</em> — Morin</div>
+        <div class="book-alt"><em>Introduction to Special Relativity</em> — Rindler</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Introduction to Quantum Mechanics</em> — David J. Griffiths</div>
+      <div class="book-note">Standard undergraduate text</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Principles of Quantum Mechanics</em> — Shankar — builds LA foundations</div>
+        <div class="book-alt"><em>A Modern Approach to Quantum Mechanics</em> — Townsend — spin-first</div>
+        <div class="book-alt"><em>Modern Quantum Mechanics</em> — Sakurai & Napolitano — graduate</div>
+        <div class="book-alt"><em>Quantum Mechanics</em> — Cohen-Tannoudji/Diu/Laloë — encyclopedic</div>
+        <div class="book-alt"><em>Quantum Mechanics</em> — Landau & Lifshitz Vol. 3</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="margin: 60px 0;">
+  <div style="margin-bottom: 32px; border-left: 3px solid var(--primary); padding-left: 24px;">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--primary); margin-bottom: 8px;">Visual Companion</div>
+    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 500; color: var(--primary-soft); margin: 0 0 8px 0;">Visual Mathematics Integration</h2>
+    <p style="line-height: 1.7; color: var(--ink-dim); font-style: italic; margin: 0;">Geometric and pictorial companion texts integrated throughout the math curriculum at specific stages. Not a separate track — these slot alongside the primary proof-based texts to provide alternative framings for visual cognition.</p>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">LEVEL · 1</div>
+      <h3>High School Foundations</h3>
+      <div class="track-desc">Integrate alongside Stages 1-2 (Algebra, Geometry, Trig). Pictorial-to-symbolic modeling.</div>
+    </div>
+    <div class="book-cluster">
+      <div class="book-primary"><em>Introduction to Algebra</em> — Richard Rusczyk (AoPS)</div>
+      <div class="book-note">Heavy spatial problem-solving patterns alongside Gelfand Algebra</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Geometry and the Imagination</em> — Hilbert &amp; Cohn-Vossen — visual masterpiece companion to Kiselev</div>
+        <div class="book-alt">Also retained: Jacobs <em>Geometry: Seeing Doing Understanding</em>, Van Dyke <em>Visual Approach to Algebra</em>, Rockswold <em>Algebra and Trig with Modeling</em>, Dillon <em>Geometry Through History</em>, Jacobs <em>Mathematics: A Human Endeavor</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">LEVEL · 2</div>
+      <h3>Intermediate Grids &amp; Symmetries</h3>
+      <div class="track-desc">Integrate alongside Stages 2-5. Linear coordinate systems, symmetry, group structures.</div>
+    </div>
+    <div class="book-cluster">
+      <div class="book-primary"><em>Symmetry</em> — Hermann Weyl <em>+</em> <em>Geometry and Topology</em> — Miles Reid &amp; Balázs Szendrői</div>
+      <div class="book-note">Weyl unifies art/biology/chemistry through group theory. Reid &amp; Szendrői unifies affine/projective/hyperbolic geometries through diagrams</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Linear Algebra Done Right</em> — Sheldon Axler (already in Stage 5)</div>
+        <div class="book-alt">Also: Gelfand <em>Functions and Graphs / Method of Coordinates</em>, Poole <em>Linear Algebra Modern Intro</em>, Carter <em>Visual Group Theory</em>, Mumford-Series-Wright <em>Indra's Pearls</em>, Kalajdzievski <em>Math and Art</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">LEVEL · 3</div>
+      <h3>Fields, Fluids &amp; Calculus</h3>
+      <div class="track-desc">Integrate alongside Stages 6-7. Vector calculus, complex maps, intuitive non-verbal proofs.</div>
+    </div>
+    <div class="book-cluster">
+      <div class="book-primary"><em>Vector Calculus, Linear Algebra, and Differential Forms: A Unified Approach</em> — John &amp; Barbara Hubbard</div>
+      <div class="book-note">Primary alternative to Apostol Vol 2. Geometric intuition over mechanical computation.</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Visualizing Mathematics with 3D Printing</em> — Henry Segerman — 2D/3D/4D as actual models, manifold intuition</div>
+        <div class="book-alt"><em>Advanced Calculus: A Geometric View</em> — James J. Callahan — geometric vantage on Jacobians and multiple integrals</div>
+        <div class="book-alt">Also: Weeks <em>Shape of Space</em>, Nelsen <em>Proofs Without Words</em>, Schey <em>Div Grad Curl</em>, Needham <em>Visual Complex Analysis</em>, Bachman <em>Geometric Approach to Differential Forms</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">LEVEL · 4</div>
+      <h3>Advanced Spacetime &amp; Gauge Fields</h3>
+      <div class="track-desc">Integrate into Track T (Special &amp; General Relativity). Manifolds, geometric algebra, gauge theory, global topology.</div>
+    </div>
+    <div class="book-cluster">
+      <div class="book-primary"><em>The Geometry of Physics: An Introduction</em> — Theodore Frankel <em>+</em> <em>Gauge Fields, Knots and Gravity</em> — Baez &amp; Muniain</div>
+      <div class="book-note">Frankel: phenomenally clear bundle geometry, Lie groups, gauge invariants. Baez-Muniain: knot diagrams and visual loop spaces demystify gauge theory.</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Gravitation</em> — Misner, Thorne, Wheeler [MTW] — canonical visual encyclopedia, already in Track T</div>
+        <div class="book-alt">Also: Needham <em>Visual Differential Geometry and Forms</em>, Doran &amp; Lasenby <em>Geometric Algebra for Physicists</em>, Fortney <em>Visual Intro to Differential Forms on Manifolds</em>, Schutz <em>Geometrical Methods of Mathematical Physics</em>, Fomenko <em>Visual Geometry and Topology</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 40px; padding: 24px 32px; background: var(--bg-elev-2); border-left: 2px solid var(--primary); border-radius: 2px;">
+    <p style="line-height: 1.7; color: var(--ink-dim); font-style: italic; margin: 0; font-size: 0.95rem;">For an artist/musician/inventor cognition, working through these visual companions alongside the primary texts is often the difference between learning the math and merely passing it. They are not required — they are alternative framings that unlock concepts when the primary text feels too abstract.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PART II — SUPPLEMENTAL ROADMAP -->
+<!-- ============================================================ -->
+
+<section id="part2">
+  <div class="section-header">
+    <div class="section-num">PART · II</div>
+    <h2>The <em>Specialized</em> Tracks</h2>
+    <p class="section-intro">Twenty-four tracks. Most build on the core foundation; some run in parallel; Track P runs entirely standalone. Arrows show dependencies. Systems thinking and EE start early; reconnection and metamaterials are convergence points; the historical AC track is a separate intellectual project.</p>
+  </div>
+
+  <div class="mermaid">
+flowchart LR
+    classDef core fill:#2a2418,stroke:#c9a961,color:#f4e4a0,stroke-width:1px
+    classDef early fill:#1c1c25,stroke:#8a7440,color:#f4e4a0,stroke-width:2px
+    classDef mid fill:#1c1c25,stroke:#c9a961,color:#f4e4a0,stroke-width:2px
+    classDef late fill:#1c1c25,stroke:#d4af37,color:#f4e4a0,stroke-width:2px
+    classDef standalone fill:#14141a,stroke:#c9a961,color:#f4e4a0,stroke-width:2px,stroke-dasharray:6 3
+
+    CORE["Core Math & Physics<br/>Stages 1-14"]
+
+    I["Track I<br/>Systems Engineering<br/>& Systems Thinking"]
+    F["Track F<br/>Electrical<br/>Engineering"]
+    J["Track J<br/>Chemistry"]
+    K["Track K<br/>Electrostatics"]
+
+    A["Track A<br/>Materials Science<br/>& Solid State"]
+    N["Track N<br/>Electricity Physics<br/>(deep)"]
+    G["Track G<br/>Crystallography"]
+    H["Track H<br/>Optical Physics"]
+
+    B["Track B<br/>Magnetism"]
+    C["Track C<br/>Plasma Physics"]
+    E["Track E<br/>Superconductivity"]
+    M["Track M<br/>Gravitation"]
+
+    D["Track D<br/>Magnetic<br/>Reconnection"]
+    L["Track L<br/>Electrogravitics"]
+    O["Track O<br/>Metamaterials"]
+
+    P["Track P<br/>Historical AC Theory<br/>(standalone)"]
+    Q["Track Q<br/>Probability &amp; Statistics"]
+    R["Track R<br/>Statistical Mechanics<br/>&amp; Thermodynamics"]
+    S["Track S<br/>Programming<br/>&amp; Numerical Methods"]
+    T["Track T<br/>Special &amp; General<br/>Relativity"]
+    U["Track U<br/>CS &amp; Algorithms<br/>(standalone)"]
+    V["Track V<br/>Biology &amp; Biochemistry<br/>(standalone)"]
+    W["Track W<br/>Music Theory<br/>(standalone)"]
+    X["Track X<br/>History &amp; Philosophy<br/>of Science (standalone)"]
+
+    CORE --> A
+    CORE --> H
+    CORE --> K
+    CORE --> M
+    CORE -.early.-> I
+    CORE -.early.-> F
+    CORE -.early.-> J
+
+    K --> N
+    A --> N
+    A --> G
+    A --> B
+    A --> E
+    H -.bridges.-> C
+    H -.bridges.-> B
+    J --> A
+    F -.coil-project.-> B
+
+    CORE --> C
+    C --> D
+    B --> D
+
+    M --> L
+    K --> L
+    E --> L
+
+    H --> O
+    A --> O
+    G -.helps.-> O
+    C -.plasmonic.-> O
+
+    CORE --> Q
+    Q --> R
+    R -.deepens.-> A
+    R -.deepens.-> C
+    S -.before-sim.-> O
+    CORE --> T
+    T --> L
+    T --> M
+    CORE -.standalone.-> U
+    CORE -.standalone.-> V
+    CORE -.standalone.-> W
+    CORE -.standalone.-> X
+
+    class CORE core
+    class I,F,J,K early
+    class A,N,G,H,M,Q,R mid
+    class B,C,E,D,L,O,T late
+    class P,U,V,W,X,S standalone
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · I</div>
+      <h3>Systems Engineering & Systems Thinking</h3>
+      <div class="track-desc">Start early — cross-cutting framework that informs every other track</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Thinking in Systems: A Primer</em> — Donella Meadows</div>
+      <div class="book-note">The friendliest entry; read first</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>The Fifth Discipline</em> — Senge</div>
+        <div class="book-alt"><em>The Systems View of Life</em> — Capra & Luisi</div>
+        <div class="book-alt"><em>General System Theory</em> — Bertalanffy</div>
+        <div class="book-alt"><em>Steps to an Ecology of Mind</em> — Bateson</div>
+        <div class="book-alt"><em>Cybernetics</em> — Wiener</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Complexity: A Guided Tour</em> — Melanie Mitchell</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Hidden Order</em> — John H. Holland</div>
+        <div class="book-alt"><em>At Home in the Universe</em> — Kauffman</div>
+        <div class="book-alt"><em>Sync</em> — Strogatz</div>
+        <div class="book-alt"><em>Dynamics of Complex Systems</em> — Bar-Yam (free PDF)</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Mind and Nature: A Necessary Unity</em> — Bateson</div>
+      <div class="book-note">Philosophical edge — directly bridges to consciousness work</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>The Tree of Knowledge</em> — Maturana & Varela</div>
+        <div class="book-alt"><em>The Embodied Mind</em> — Varela/Thompson/Rosch</div>
+        <div class="book-alt"><em>Mind in Life</em> — Evan Thompson</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · F</div>
+      <h3>Electrical Engineering</h3>
+      <div class="track-desc">Runs in parallel with physics. Circuits + Art of Electronics can start immediately.</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Electrical Engineering: Principles and Applications</em> — Hambley</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Electric Circuits</em> — Nilsson & Riedel</div>
+        <div class="book-alt"><em>Basic Engineering Circuit Analysis</em> — Irwin & Nelms</div>
+        <div class="book-alt"><em>Fundamentals of Electric Circuits</em> — Sadiku/Alexander</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>The Art of Electronics</em> (3rd ed.) — Horowitz & Hill</div>
+      <div class="book-note">The lab bible — non-negotiable for hands-on work</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Learning the Art of Electronics</em> — Horowitz/Hill/Robinson</div>
+        <div class="book-alt"><em>Practical Electronics for Inventors</em> — Scherz & Monk</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Electric Machinery Fundamentals</em> — Chapman</div>
+      <div class="book-note">Directly relevant to 3-phase coil project</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Power Electronics</em> — Mohan/Undeland/Robbins</div>
+        <div class="book-alt"><em>Electric Machinery</em> — Fitzgerald</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · J</div>
+      <h3>Chemistry</h3>
+      <div class="track-desc">General chemistry alongside intro physics. Solid-state alongside materials.</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Chemical Principles</em> — Atkins & Jones</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Chemistry</em> — Zumdahl</div>
+        <div class="book-alt"><em>Principles of Modern Chemistry</em> — Oxtoby/Gillis/Butler</div>
+        <div class="book-alt"><em>General Chemistry</em> — Linus Pauling (Dover)</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Solid State Chemistry and its Applications</em> — Anthony R. West</div>
+      <div class="book-note">Bridge to materials work</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Solid State Chemistry: An Introduction</em> — Smart & Moore</div>
+        <div class="book-alt"><em>Physical Chemistry</em> — Atkins & de Paula</div>
+        <div class="book-alt"><em>Inorganic Chemistry</em> — Housecroft & Sharpe</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · K</div>
+      <h3>Electrostatics</h3>
+      <div class="track-desc">High voltage, dielectrics, ESD, lab work. Read after Stage 11.</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>High Voltage Engineering: Fundamentals</em> — Kuffel/Zaengl/Kuffel</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Electrostatics</em> — Jonassen</div>
+        <div class="book-alt"><em>Electrostatics: Principles, Problems and Applications</em> — Cross</div>
+        <div class="book-alt"><em>Fundamentals of Applied Electrostatics</em> — Crowley</div>
+        <div class="book-alt"><em>Dielectric Phenomena in Solids</em> — Kao</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · A</div>
+      <h3>Materials Science & Solid State Physics</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Materials Science and Engineering: An Introduction</em> — Callister & Rethwisch</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Introduction to Materials Science for Engineers</em> — Shackelford</div>
+        <div class="book-alt"><em>Engineering Materials</em> Vols. 1 & 2 — Ashby & Jones</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Introduction to Solid State Physics</em> — Charles Kittel</div>
+      <div class="book-note">The standard</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Solid State Physics</em> — Ashcroft & Mermin — deeper, rigorous</div>
+        <div class="book-alt"><em>The Oxford Solid State Basics</em> — Simon — modern, friendlier</div>
+        <div class="book-alt"><em>Condensed Matter Physics</em> — Marder — graduate</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · N</div>
+      <h3>Electricity Physics — the deep physics of electricity itself</h3>
+      <div class="track-desc">Charge as quantum field, microscopic conduction, QED, electrochemistry, plasma electricity, bioelectricity, vacuum effects</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Classical Electrodynamics</em> — Jackson</div>
+      <div class="book-note">The rigorous foundation</div>
+      <div class="book-alternatives">
+        <div class="book-alt">Feynman Lectures Vol. II — uniquely lucid</div>
+        <div class="book-alt"><em>Ashcroft & Mermin</em> — for microscopic conduction theory</div>
+        <div class="book-alt"><em>Electrons and Phonons</em> — Ziman</div>
+        <div class="book-alt"><em>Fundamentals of Carrier Transport</em> — Lundstrom</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>QED: The Strange Theory of Light and Matter</em> — Feynman</div>
+      <div class="book-note">Accessible intro to charge at its deepest level</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>An Introduction to Quantum Field Theory</em> — Peskin & Schroeder</div>
+        <div class="book-alt"><em>Quantum Electrodynamics</em> — Greiner & Reinhardt</div>
+        <div class="book-alt"><em>The Quantum Vacuum</em> — Milonni</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>A History of the Theories of Aether and Electricity</em> (2 vols.) — Whittaker</div>
+      <div class="book-note">Definitive history; paths-not-taken in electrical theory</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>From Maxwell to Microphysics</em> — Buchwald</div>
+        <div class="book-alt"><em>Electrodynamics from Ampere to Einstein</em> — Darrigol</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>The Electrical Nature of Storms</em> — MacGorman & Rust</div>
+      <div class="book-note">Atmospheric electricity, lightning, the global circuit</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Lightning: Physics and Effects</em> — Rakov & Uman</div>
+        <div class="book-alt"><em>Bioelectricity: A Quantitative Approach</em> — Plonsey & Barr</div>
+        <div class="book-alt"><em>Bioelectromagnetism</em> — Malmivuo & Plonsey (free online)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · G</div>
+      <h3>Crystallography & Single-Crystal Alignment</h3>
+      <div class="track-desc">Essential for aligning magnetic fields with crystal axes</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>The Basics of Crystallography and Diffraction</em> — Hammond</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Structure of Materials</em> — De Graef & McHenry</div>
+        <div class="book-alt"><em>Fundamentals of Crystallography</em> — Giacovazzo et al.</div>
+        <div class="book-alt"><em>Space Groups for Solid State Scientists</em> — Burns & Glazer</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Elements of X-Ray Diffraction</em> — Cullity & Stock</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>X-Ray Diffraction</em> — Warren (Dover)</div>
+        <div class="book-alt"><em>Elements of Modern X-Ray Physics</em> — Als-Nielsen & McMorrow</div>
+        <div class="book-alt"><em>The Laue Method</em> — Amorós/Buerger/Amorós</div>
+        <div class="book-alt"><em>Laue Atlas</em> — Preuss/Krahl-Urban/Butz</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Magnetic Structures and Their Determination Using Group Theory</em> — Wills</div>
+      <div class="book-note">Directly relevant to magnetic ordering</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Neutron Diffraction of Magnetic Materials</em> — Izyumov/Naish/Ozerov</div>
+        <div class="book-alt">Bilbao Crystallographic Server · ISOTROPY (BYU) — free tools</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · H</div>
+      <h3>Optical Physics & Photonics</h3>
+      <div class="track-desc">Lasers, nonlinear optics, magneto-optics, plasma diagnostics</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Optics</em> — Hecht</div>
+      <div class="book-note">Universal undergraduate standard</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Fundamentals of Photonics</em> — Saleh & Teich — best single comprehensive text</div>
+        <div class="book-alt"><em>Introduction to Fourier Optics</em> — Goodman</div>
+        <div class="book-alt"><em>Principles of Optics</em> — Born & Wolf — encyclopedic reference</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Lasers</em> — Siegman</div>
+      <div class="book-note">The laser bible</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Laser Physics</em> — Milonni & Eberly</div>
+        <div class="book-alt"><em>Nonlinear Optics</em> — Boyd</div>
+        <div class="book-alt"><em>The Quantum Theory of Light</em> — Loudon — quantum optics</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Modern Magnetooptics and Magnetooptical Materials</em> — Zvezdin & Kotov</div>
+      <div class="book-note">Directly relevant to magnetics work</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Optical Waves in Crystals</em> — Yariv & Yeh</div>
+        <div class="book-alt"><em>Physical Properties of Crystals</em> — Nye — tensor properties</div>
+        <div class="book-alt"><em>Principles of Plasma Diagnostics</em> — Hutchinson — bridges to plasma</div>
+        <div class="book-alt"><em>Building Electro-Optical Systems</em> — Hobbs — lab bible</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · B</div>
+      <h3>Magnetism & Magnetic Materials</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Magnetism and Magnetic Materials</em> — J.M.D. Coey</div>
+      <div class="book-note">The modern bible</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Magnetic Materials: Fundamentals and Applications</em> — Spaldin</div>
+        <div class="book-alt"><em>Introduction to Magnetic Materials</em> — Cullity & Graham</div>
+        <div class="book-alt"><em>Introduction to the Theory of Ferromagnetism</em> — Aharoni</div>
+        <div class="book-alt"><em>Magnetism in Condensed Matter</em> — Blundell</div>
+        <div class="book-alt"><em>Introduction to Magnetism and Magnetic Materials</em> — Jiles</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · C</div>
+      <h3>Plasma Physics</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Introduction to Plasma Physics and Controlled Fusion</em> — Francis F. Chen</div>
+      <div class="book-note">The canonical first text</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Fundamentals of Plasma Physics</em> — Bellan — more mathematical</div>
+        <div class="book-alt"><em>Introduction to Plasma Physics</em> — Goldston & Rutherford</div>
+        <div class="book-alt"><em>Principles of Plasma Physics</em> — Krall & Trivelpiece</div>
+        <div class="book-alt"><em>The Physics of Plasmas</em> — Boyd & Sanderson</div>
+        <div class="book-alt"><em>Ideal MHD</em> — Freidberg</div>
+        <div class="book-alt"><em>Waves in Plasmas</em> — Stix</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · E</div>
+      <h3>Superconductivity</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Introduction to Superconductivity</em> — Michael Tinkham</div>
+      <div class="book-note">Standard graduate text</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Superconductivity, Superfluids and Condensates</em> — Annett — accessible modern intro</div>
+        <div class="book-alt"><em>Superconductivity of Metals and Alloys</em> — de Gennes</div>
+        <div class="book-alt"><em>Theory of Superconductivity</em> — Schrieffer (BCS)</div>
+        <div class="book-alt"><em>Superconductivity</em> — Poole/Farach/Creswick</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · M</div>
+      <h3>Gravitation & Gravity Physics</h3>
+      <div class="track-desc">Newtonian through GR through gravitational waves. Prerequisite for Track L.</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Gravity: An Introduction to Einstein's General Relativity</em> — Hartle</div>
+      <div class="book-note">Most accessible, physics-first</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>A First Course in General Relativity</em> — Schutz</div>
+        <div class="book-alt"><em>Spacetime and Geometry</em> — Carroll — best modern textbook</div>
+        <div class="book-alt"><em>Gravitation</em> — Misner/Thorne/Wheeler (MTW)</div>
+        <div class="book-alt"><em>General Relativity</em> — Wald</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Black Holes and Time Warps</em> — Kip Thorne</div>
+      <div class="book-note">Already in your library</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Gravitational Waves</em> Vols. 1 & 2 — Maggiore</div>
+        <div class="book-alt"><em>Cosmology</em> — Weinberg</div>
+        <div class="book-alt"><em>Theory and Experiment in Gravitational Physics</em> — Will</div>
+        <div class="book-alt"><em>Quantum Gravity</em> — Rovelli</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · D</div>
+      <h3>Magnetic Reconnection</h3>
+      <div class="track-desc">No undergrad textbook — cover MHD first, then dedicated reconnection texts</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Magnetic Reconnection: MHD Theory and Applications</em> — Priest & Forbes</div>
+      <div class="book-note">The standard reference</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Magnetic Reconnection in Plasmas</em> — Biskamp</div>
+        <div class="book-alt"><em>Principles of Magnetohydrodynamics</em> — Goedbloed & Poedts</div>
+        <div class="book-alt"><em>Plasma Physics for Astrophysics</em> — Kulsrud</div>
+        <div class="book-alt">Yamada/Kulsrud/Ji review (Rev. Mod. Phys. 2010) — free online</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · L</div>
+      <h3>Electrogravitics</h3>
+      <div class="track-desc">Research track. Primary sources + mainstream physics critiques + adjacent serious propulsion physics</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Electrogravitics Systems: Reports on a New Propulsion Methodology</em> — Valone (ed.)</div>
+      <div class="book-note">Collects the 1956 Aviation Studies and Gravitics Situation reports</div>
+      <div class="book-alternatives">
+        <div class="book-alt">T.T. Brown patents 2,949,550 · 3,022,430 · 3,187,206</div>
+        <div class="book-alt"><em>Secrets of Antigravity Propulsion</em> — LaViolette</div>
+        <div class="book-alt"><em>Defying Gravity: The Parallel Universe of T. Townsend Brown</em> — Schatzkin</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Frontiers of Propulsion Science</em> — Millis & Davis (AIAA)</div>
+      <div class="book-note">NASA-funded survey of speculative propulsion — engineering-serious</div>
+      <div class="book-alternatives">
+        <div class="book-alt">Bahder & Fazi — Army Research Lab ion-wind analysis (critical)</div>
+        <div class="book-alt"><em>Making Starships and Stargates</em> — Woodward — Mach-effect propulsion</div>
+        <div class="book-alt"><em>Gravitation and Inertia</em> — Ciufolini & Wheeler — frame-dragging</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · O</div>
+      <h3>Metamaterials</h3>
+      <div class="track-desc">Engineered electromagnetic response. Synthesis of E&M, optics, materials, crystallography, plasma. Late-stage track.</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Metamaterials: Physics and Engineering Explorations</em> — Engheta & Ziolkowski (eds.)</div>
+      <div class="book-note">Standard introductory edited volume</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Theory and Phenomena of Metamaterials</em> — Capolino (ed.) — handbook reference</div>
+        <div class="book-alt"><em>Electromagnetic Metamaterials</em> — Caloz & Itoh — transmission-line approach</div>
+        <div class="book-alt"><em>Analytical Modeling in Applied Electromagnetics</em> — Tretyakov — math foundation</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Optical Metamaterials: Fundamentals and Applications</em> — Cai & Shalaev</div>
+      <div class="book-note">Optical-frequency work and plasmonics</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Metamaterials with Negative Parameters</em> — Marqués/Martín/Sorolla</div>
+        <div class="book-alt"><em>Plasmonics: Fundamentals and Applications</em> — Maier — plasmonics standard</div>
+        <div class="book-alt"><em>Principles of Nano-Optics</em> — Novotny & Hecht</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary">Pendry · Smith · Engheta · Alù · Capasso · Shalaev — primary papers</div>
+      <div class="book-note">Read the source. Veselago 1968 · Pendry perfect lens PRL 2000 · Smith negative-index 2000 · Pendry-Schurig-Smith cloak Science 2006</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Geometry and Light</em> — Leonhardt (Dover) — transformation optics foundation</div>
+        <div class="book-alt">Bertoldi · Vitelli · van Hecke — mechanical metamaterials reviews</div>
+        <div class="book-alt">Fleury · Sounas · Haberman · Alù — acoustic metamaterials reviews</div>
+      </div>
+    </div>
+
+    <div class="book-cluster" style="border-color: var(--primary); border-style: dashed;">
+      <div class="book-primary" style="color: var(--primary);">The 90-Week Path (calendar)</div>
+      <div class="book-note"><strong>Phase I · Weeks 1-28 — Textbook Foundations.</strong> Field history & Veselago; Engheta-Ziolkowski overview; Tretyakov homogenization theory; Marqués negative-index theory & experiment; Pendry transformation optics; Leonhardt geometric foundation; Maier plasmonics (Drude → SPPs → LSPR → enhancement); Cai-Shalaev optical metamaterials; Capasso metasurfaces; Cui coding metamaterials; acoustic & mechanical metamaterials.</div>
+      <div class="book-note"><strong>Phase II · Weeks 29-58 — Primary Literature.</strong> Re-read foundational papers; Pendry group (1996 wire array → 1999 SRR → 2006 transformation optics); Smith experimental papers; Engheta optical nanoantennas; Alù scattering-cancellation cloaks; Capasso metasurfaces 2011→present; Shalaev optical negative-index; topological photonics (Joannopoulos/Soljačić); PT-symmetric photonics; time-varying metamaterials; specialization choice and deep reading.</div>
+      <div class="book-note"><strong>Phase III · Weeks 59-90 — Simulation & Capstone.</strong> MEEP/COMSOL setup; verification against analytics; SRR & wire array simulations; full negative-index unit cell; cloak demonstration; plasmonic nanoparticle & antenna; metasurface elements & metalens design; perfect absorber; capstone project (8 weeks from concept to documentation).</div>
+      <div class="book-note">Prerequisites assumed solid: Griffiths E&M, Hecht optics, Kittel solid-state. Plasma physics (Chen) and crystallography helpful for plasmonic and topological subareas. From cold start with no prerequisites, add 18-24 months of prerequisite work before week 1.</div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">TRACK · P</div>
+      <h3>Historical AC Theory & Complex Methods</h3>
+      <div class="track-desc">Standalone. Recovery of Steinmetz's full symbolic method, Heaviside's operational calculus, and the four-quadrant treatment. Prerequisites are minimal — algebra, trig, conceptual AC. Independent of all other tracks.</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Visual Complex Analysis</em> — Tristan Needham (25th anniversary ed.)</div>
+      <div class="book-note">The geometric foundation. j-operator as 90-degree rotation — once seen, the entire phasor method becomes obvious</div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Engineering Mathematics</em> — Charles Proteus Steinmetz (1911/1915)</div>
+      <div class="book-note">Steinmetz teaching the symbolic method to working engineers. Free on Project Gutenberg & Internet Archive. The accessible entry point.</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Theory and Calculation of Alternating Current Phenomena</em> — Steinmetz (1916 ed.) — the foundational text; full four-quadrant treatment</div>
+        <div class="book-alt"><em>Theory and Calculation of Transient Electric Phenomena and Oscillations</em> — Steinmetz (1909/1920)</div>
+        <div class="book-alt"><em>Elementary Lectures on Electric Discharges, Waves and Impulses</em> — Steinmetz (1914) — accessible transient material</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Electromagnetic Theory</em> (3 vols, 1893-1912) — Oliver Heaviside</div>
+      <div class="book-note">Operational calculus, transmission line theory, modern Maxwell's equations. Free on Internet Archive. Denser than Steinmetz but unmatched on energy flux and EM propagation.</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Electrical Papers</em> (2 vols, 1892) — Heaviside</div>
+        <div class="book-alt"><em>Oliver Heaviside: The Life, Work, and Times</em> — Paul Nahin — definitive biography</div>
+        <div class="book-alt"><em>The Maxwellians</em> — Bruce Hunt — Heaviside in context with Hertz & FitzGerald</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary">Tesla · Alexanderson · Stone — primary sources</div>
+      <div class="book-note">Tesla's <em>Colorado Springs Notes</em>, Alexanderson's <em>Proc. IRE</em> papers (high-frequency alternators, transatlantic wireless), John Stone Stone's early radio theory patents and papers</div>
+      <div class="book-alternatives">
+        <div class="book-alt">Tesla, <em>Lectures, Patents, Articles</em> — Nikola Tesla Museum Belgrade</div>
+        <div class="book-alt">Tesla, <em>My Inventions</em> (1919) — autobiographical</div>
+        <div class="book-alt"><em>Syntony and Spark</em> — Hugh Aitken — technical history of early radio</div>
+        <div class="book-alt"><em>Networks of Power</em> — Thomas Hughes — power grid development 1880-1930</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Four Quadrant Representation of Electricity</em> — Eric P. Dollard (2013)</div>
+      <div class="book-note">Contemporary recovery. Engineering core stands independent of broader cosmological framing. Through ericpdollard.com & A&P Electronic Media</div>
+      <div class="book-alternatives">
+        <div class="book-alt">Dollard, <em>Symbolic Representation of Alternating Electric Waves</em></div>
+        <div class="book-alt">Dollard, <em>Symbolic Representation of the Generalized Electric Wave</em></div>
+        <div class="book-alt">Dollard, <em>Condensed Intro to Tesla Transformers</em> (Borderland Sciences, 1986)</div>
+        <div class="book-alt">Dollard, <em>Theory of Wireless Power</em> (1991)</div>
+        <div class="book-alt">Aaron Murakami · Peter Lindemann — Dollard's collaborators</div>
+        <div class="book-alt">Konstantin Meyl · Thomas Bearden · Paul Stowe · André Waser — read critically; varying credibility</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary">Modern circuit-text supplements (contemporary phasor treatment)</div>
+      <div class="book-note">For comparison to the historical sources, and where the P-Q four-quadrant treatment is used seriously in contemporary practice</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Fundamentals of Electric Circuits</em> — Alexander & Sadiku (7th ed)</div>
+        <div class="book-alt"><em>Electric Circuits</em> — Nilsson & Riedel (11th ed)</div>
+        <div class="book-alt"><em>Power Systems Analysis</em> — Bergen & Vittal — full P-Q plane</div>
+        <div class="book-alt"><em>Signals and Systems</em> — Oppenheim & Willsky — phasors as special case of Fourier/Laplace</div>
+      </div>
+    </div>
+
+    <div class="book-cluster" style="border-color: var(--primary); border-style: dashed;">
+      <div class="book-primary" style="color: var(--primary);">The 44-Week Path (calendar)</div>
+      <div class="book-note"><strong>Phase I · Weeks 1-12 — Foundations.</strong> Needham geometric complex analysis; sinusoids → phasors; impedance & the four-quadrant complex plane; AC power & the P-Q plane. Both four-quadrant geometries with their distinct meanings.</div>
+      <div class="book-note"><strong>Phase II · Weeks 13-26 — Steinmetz directly.</strong> <em>Engineering Mathematics</em>; <em>Theory and Calculation of Alternating Current Phenomena</em> (1916) — single-phase, polyphase, transformers, induction motors; non-sinusoidal waves & harmonics; transients.</div>
+      <div class="book-note"><strong>Phase III · Weeks 27-34 — Heaviside.</strong> Nahin biography & Hunt's <em>Maxwellians</em> for context; <em>Electromagnetic Theory</em> vols 1-3; transmission lines & operational calculus; bridge to modern Laplace transforms.</div>
+      <div class="book-note"><strong>Phase IV · Weeks 35-40 — Tesla-era primary sources.</strong> Tesla Colorado Springs Notes; Alexanderson papers; John Stone Stone; Aitken & Hughes for historical context.</div>
+      <div class="book-note"><strong>Phase V · Weeks 41-44 — Contemporary recovery.</strong> Dollard's <em>Four Quadrant Representation</em> with foundations now in place; broader recovery community read critically; synthesis document.</div>
+      <div class="book-note"><strong>Honest framing:</strong> Steinmetz & Heaviside are unambiguously legitimate recovery work — texts working engineers should still read. Tesla primary sources are limited but worth reading directly. Dollard's engineering recovery has real substance; his broader cosmological framing is harder to evaluate — engage critically. Track doesn't take a position. Total cost relying on free primary sources: under $100. End state: engineering literacy very few working engineers have.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PART III — NON-ACADEMIC -->
+<!-- ============================================================ -->
+
+<section id="part3">
+  <div class="section-header">
+    <div class="section-num">PART · III</div>
+    <h2>The <em>Synthesis</em> Reading</h2>
+    <p class="section-intro">Philosophy, anomalous phenomena, contemplative traditions, esoterica, Persian and Scottish heritage, cultural theory, the worldbuilding influences, and the precedents for the book you're sketching. Map of territories rather than a sequence.</p>
+  </div>
+
+  <div class="mermaid">
+flowchart TB
+    classDef foundation fill:#2a2418,stroke:#c9a961,color:#f4e4a0,stroke-width:1px
+    classDef philo fill:#1c1c25,stroke:#c9a961,color:#f4e4a0,stroke-width:2px
+    classDef culture fill:#1c1c25,stroke:#8a7440,color:#f4e4a0,stroke-width:2px
+    classDef synth fill:#1c1c25,stroke:#d4af37,color:#f4e4a0,stroke-width:2px
+
+    CORE_PHIL["Core Philosophy<br/>Spinoza · Kant · Merleau-Ponty"]
+
+    MIND["Philosophy of Mind<br/>Kastrup · Chalmers · McGilchrist<br/>Goff · Hofstadter · Dennett"]
+    PESSIMISM["Pessimism<br/>Ligotti · Schopenhauer · Cioran<br/>Brassier · Zapffe"]
+    PHILSCI["Philosophy of Science<br/>Kuhn · Feyerabend · Polanyi<br/>Hacking · Latour"]
+    CULTURAL["Cultural Theory<br/>Spengler · Nietzsche · Baudrillard<br/>Evola · Sorel · Vico"]
+
+    SF_HARD["SF — Hard / Cosmology<br/>Strugatsky · Lem · Wolfe<br/>Cordwainer Smith · Cixin Liu"]
+    SF_NEWWAVE["SF — New Wave<br/>Ballard · Aldiss · Harrison<br/>Bayley · Delany · Priest"]
+    FANTASY["Fantasy / Weird<br/>Moorcock · Vance · Wagner<br/>Gemmell · Leiber · Dunsany"]
+    LOVECRAFT["Lovecraftian<br/>Lovecraft · Smith · Howard<br/>Machen · Blackwood · Ligotti"]
+
+    OCCULT["Esoteric / Occult<br/>Crowley · Lévi · Blavatsky<br/>Spare · Carroll · Grant"]
+    FORTEAN["Fortean / Anomalous<br/>Fort · Vallée · Keel<br/>Strieber · Kripal · Pasulka"]
+    MYTH["Mythology / Ancient<br/>Graves · Campbell · Hancock<br/>Schwaller · Hall · Hamlet's Mill"]
+
+    PERSIAN["Persian Heritage<br/>Rumi · Hafiz · Khayyam · Attar<br/>Nasr · Corbin · Ferdowsi"]
+    ZORO["Zoroastrianism<br/>Boyce · Skjaervo"]
+    CELTIC["Scottish / Celtic<br/>Newton · Hunter · Carmichael<br/>Matthews · Williamson"]
+
+    EAST["Eastern Traditions<br/>Upanishads · Gita · Nagarjuna<br/>Dogen · Patanjali"]
+    GNOSTIC["Gnosticism<br/>Nag Hammadi · Pagels · Jonas"]
+    PSYCHE["Psychedelic / Contemplative<br/>Pollan · Strassman · Wallace<br/>Newberg · Brewer"]
+
+    G_W["40K Cultural Lineage<br/>Moorcock · Bayley · Smith<br/>Mills · Moebius · Druillet · Giger"]
+
+    SYNTHESIS["SYNTHESIS PRECEDENTS<br/>GEB · McGilchrist · Capra<br/>Thompson · Kripal · Pasulka<br/>Wilber · Sheldrake"]
+
+    CORE_PHIL --> MIND
+    MIND --> PESSIMISM
+    CORE_PHIL --> PHILSCI
+    CORE_PHIL --> CULTURAL
+
+    SF_HARD -.-> SF_NEWWAVE
+    SF_NEWWAVE -.-> FANTASY
+    FANTASY -.-> LOVECRAFT
+    LOVECRAFT -.-> G_W
+    SF_NEWWAVE -.-> G_W
+    FANTASY -.-> G_W
+
+    OCCULT --> FORTEAN
+    FORTEAN --> MYTH
+    OCCULT --> G_W
+
+    PERSIAN --> ZORO
+    PERSIAN --> EAST
+    EAST --> GNOSTIC
+    PSYCHE --> EAST
+    PSYCHE --> MIND
+
+    MIND --> SYNTHESIS
+    PHILSCI --> SYNTHESIS
+    CULTURAL --> SYNTHESIS
+    FORTEAN --> SYNTHESIS
+    PERSIAN --> SYNTHESIS
+
+    class CORE_PHIL foundation
+    class MIND,PESSIMISM,PHILSCI,CULTURAL philo
+    class SF_HARD,SF_NEWWAVE,FANTASY,LOVECRAFT,G_W culture
+    class OCCULT,FORTEAN,MYTH,PERSIAN,ZORO,CELTIC,EAST,GNOSTIC,PSYCHE philo
+    class SYNTHESIS synth
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">PHILOSOPHY · CORE</div>
+      <h3>The Philosophical Foundation</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Ethics</em> — Spinoza (Curley or Shirley translation)</div>
+      <div class="book-note">Substance monism · <em>Deus sive Natura</em></div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Spinoza: A Life</em> — Nadler</div>
+        <div class="book-alt"><em>Spinoza's Ethics: An Introduction</em> — Nadler</div>
+        <div class="book-alt"><em>Critique of Practical Reason</em> — Kant</div>
+        <div class="book-alt"><em>Prolegomena to Any Future Metaphysics</em> — Kant</div>
+        <div class="book-alt"><em>Phenomenology of Perception</em> — Merleau-Ponty</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">PHILOSOPHY OF MIND</div>
+      <h3>Consciousness, Idealism, the Hard Problem</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>The Idea of the World</em> — Bernardo Kastrup</div>
+      <div class="book-note">Analytic idealism, rigorous version</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>More Than Allegory</em> — Kastrup</div>
+        <div class="book-alt"><em>Why Materialism Is Baloney</em> — Kastrup</div>
+        <div class="book-alt"><em>The Conscious Mind</em> — Chalmers — rigorous hard problem</div>
+        <div class="book-alt"><em>Galileo's Error</em> — Goff — panpsychism balance</div>
+        <div class="book-alt"><em>The Matter With Things</em> — McGilchrist — recent synthesis</div>
+        <div class="book-alt"><em>Gödel, Escher, Bach</em> — Hofstadter — currently reading</div>
+        <div class="book-alt"><em>Consciousness Explained</em> — Dennett — opposing view</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">SF · CORE</div>
+      <h3>Science Fiction — Structural Foundations</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Roadside Picnic</em> — Strugatsky (owned)</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Hyperion</em> Cantos — Dan Simmons (4 volumes)</div>
+        <div class="book-alt"><em>The Book of the New Sun</em> — Gene Wolfe</div>
+        <div class="book-alt"><em>Solaris</em>, <em>The Invincible</em>, <em>His Master's Voice</em> — Lem</div>
+        <div class="book-alt"><em>The Rediscovery of Man</em>, <em>Norstrilia</em> — Cordwainer Smith — proto-40K texture</div>
+        <div class="book-alt"><em>Three-Body</em> trilogy — Cixin Liu (owned)</div>
+        <div class="book-alt"><em>Annihilation</em> / Southern Reach — VanderMeer (owned)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">FORTEAN / UAP</div>
+      <h3>Anomalous Phenomena Research</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Passport to Magonia</em> — Jacques Vallée</div>
+      <div class="book-note">Cross-cultural pattern recognition; foundational</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Dimensions</em>, <em>The Invisible College</em>, <em>Forbidden Science</em> — Vallée</div>
+        <div class="book-alt"><em>The Mothman Prophecies</em>, <em>UFOs: Operation Trojan Horse</em> — Keel</div>
+        <div class="book-alt"><em>Communion</em>, <em>The Super Natural</em> — Strieber</div>
+        <div class="book-alt"><em>The Book of the Damned</em>, <em>Lo!</em>, <em>Wild Talents</em> — Charles Fort</div>
+        <div class="book-alt"><em>Authors of the Impossible</em>, <em>The Flip</em> — Kripal — academic engagement</div>
+        <div class="book-alt"><em>American Cosmic</em> — Pasulka — academic UAP study</div>
+        <div class="book-alt"><em>Time Loops</em> — Wargo (owned) — precognition</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">PERSIAN HERITAGE</div>
+      <h3>The Sufi and Mathematical Tradition</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Spiritual Body and Celestial Earth</em> — Henry Corbin</div>
+      <div class="book-note">Persian Sufi visionary cosmology</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>The Man of Light in Iranian Sufism</em> — Corbin</div>
+        <div class="book-alt"><em>The Garden of Truth</em>, <em>Islamic Science</em> — Nasr</div>
+        <div class="book-alt"><em>The Mathematics of the Heavens and the Earth</em> — Van Brummelen</div>
+        <div class="book-alt"><em>Rubaiyat</em> — Khayyam</div>
+        <div class="book-alt"><em>Masnavi</em> — Rumi (Mojaddedi translation)</div>
+        <div class="book-alt"><em>The Conference of the Birds</em> — Attar</div>
+        <div class="book-alt"><em>Shahnameh</em> — Ferdowsi (Davis trans.)</div>
+        <div class="book-alt"><em>The Philosophy of Illumination</em> — Suhrawardi</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">CULTURAL · CIVILIZATIONAL</div>
+      <h3>Cycles, Decline, the Modern World</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>The Decline of the West</em> Vols. 1 & 2 — Spengler</div>
+      <div class="book-alternatives">
+        <div class="book-alt">Nietzsche corpus — Zarathustra, Beyond Good and Evil, Genealogy, others</div>
+        <div class="book-alt"><em>Revolt Against the Modern World</em> — Evola (read critically)</div>
+        <div class="book-alt"><em>Simulacra and Simulation</em> — Baudrillard</div>
+        <div class="book-alt"><em>A Study of History</em> — Toynbee (Somervell abridgement)</div>
+        <div class="book-alt"><em>The New Science</em> — Vico</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">40K · CULTURAL LINEAGE</div>
+      <h3>Direct Influences on Warhammer 40,000</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary">Moorcock — Elric · The Eternal Champion sequence</div>
+      <div class="book-alternatives">
+        <div class="book-alt">Barrington J. Bayley — direct GW circle connection</div>
+        <div class="book-alt">Cordwainer Smith — Instrumentality of Mankind</div>
+        <div class="book-alt">A.E. van Vogt — Voyage of the Space Beagle</div>
+        <div class="book-alt">Pat Mills — Nemesis the Warlock, ABC Warriors, Sláine</div>
+        <div class="book-alt">Moebius · Druillet · Bilal · Jodorowsky — Heavy Metal lineage</div>
+        <div class="book-alt">H.R. Giger — Tyranid visual ancestor</div>
+        <div class="book-alt">John Blanche Masterclass Vols. 1 & 2 (owned)</div>
+        <div class="book-alt">Karl Edward Wagner — Kane; Chaos Undivided ancestor</div>
+        <div class="book-alt">Austin Osman Spare · Peter Carroll — chaos magic</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="track-detail">
+    <div class="track-header">
+      <div class="track-code">SYNTHESIS · PRECEDENTS</div>
+      <h3>Books That Do What You Want To Do</h3>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Gödel, Escher, Bach</em> — Hofstadter (currently reading)</div>
+      <div class="book-note">Model of cross-domain synthesis done with rigor</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>The Tao of Physics</em> — Capra — original physics-meets-mysticism</div>
+        <div class="book-alt"><em>The Systems View of Life</em> — Capra & Luisi</div>
+        <div class="book-alt"><em>The Matter With Things</em> — McGilchrist — most ambitious recent</div>
+        <div class="book-alt"><em>Mind in Life</em> — Evan Thompson — phenomenology + cog sci + Buddhism</div>
+        <div class="book-alt"><em>Sex, Ecology, Spirituality</em> — Wilber</div>
+        <div class="book-alt"><em>The Flip</em> — Kripal</div>
+        <div class="book-alt"><em>American Cosmic</em> — Pasulka</div>
+        <div class="book-alt"><em>Science Set Free</em> — Sheldrake</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PART IV — ART CURRICULUM & VISUAL REFERENCE -->
+<!-- ============================================================ -->
+
+<section id="part4">
+  <div class="section-header">
+    <div class="section-num">PART · IV</div>
+    <h2>The <em>Art</em> Path & Reference</h2>
+    <p class="section-intro">A 52-week curriculum across five phases — foundations, figure, light/value/color, media, story — deploying the heavy-hitter books from your library. Followed by daily-use visual reference: color wheels, value scales, hatching, perspective construction, head proportions, gesture, and anatomy. The flowchart you keep open while working.</p>
+  </div>
+
+  <div class="mermaid">
+flowchart TD
+    classDef phase fill:#1c1c25,stroke:#c9a961,color:#f4e4a0,stroke-width:2px
+
+    P1["PHASE I · Weeks 1-12<br/>Foundations<br/><br/>Edwards · Dodson · Norling<br/>Loomis · Vilppu · Robertson"]
+    P2["PHASE II · Weeks 13-52<br/>The Figure<br/>(40 weeks - the foundation)<br/><br/>Mattesi Force · Vilppu<br/>Zarins · Hogarth · Sheppard<br/>Loomis · Bridgman"]
+    P3["PHASE III · Weeks 53-72<br/>Light · Value · Color<br/><br/>Gurney Color and Light<br/>Robertson How to Render<br/>Aristides · Mateu-Mestre"]
+    P4["PHASE IV · Weeks 73-84<br/>Media Mastery<br/><br/>Dunn · Voloshin-Smith<br/>Speed · Schmid · Kreutz<br/>Aristides"]
+    P5["PHASE V · Weeks 85-95<br/>Story & Sequential Art<br/><br/>Eisner · Mateu-Mestre<br/>Hamm · Williams<br/>Final Comic Project"]
+
+    P1 --> P2 --> P3 --> P4 --> P5
+
+    class P1,P2,P3,P4,P5 phase
+  </div>
+
+  <h3 style="margin-top: 60px; margin-bottom: 24px; color: var(--primary-soft);">The Books — By Phase</h3>
+
+  <div class="book-group">
+    <div class="book-group-label">Phase I — Foundations (Weeks 1-12)</div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>The New Drawing on the Right Side of the Brain</em> — Betty Edwards</div>
+      <div class="book-note">Weeks 1-2 · learning to see before learning to draw</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Keys to Drawing</em> — Bert Dodson — weeks 3-4, line and mark</div>
+        <div class="book-alt"><em>Pencil Sketching</em> — Thomas Wang</div>
+        <div class="book-alt"><em>Drawing Mentor 1-3</em> — Sarah Bowles — materials and line</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Perspective Made Easy</em> — Ernest R. Norling</div>
+      <div class="book-note">Weeks 5-6 · gentle geometric introduction</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>The Complete Guide to Perspective Drawing</em> — Craig Attebery</div>
+        <div class="book-alt"><em>Perspective for Comic Book Artists</em> — David Chelsea</div>
+        <div class="book-alt"><em>How to Draw</em> — Scott Robertson — best perspective for designers</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Fun With a Pencil</em> — Andrew Loomis</div>
+      <div class="book-note">Weeks 7-8 · construction from primitive shapes</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>How to Render</em> — Scott Robertson — the bridge book</div>
+        <div class="book-alt"><em>Fundamentals of Drawing</em> — Vladimir Mogilevtsev — Russian academic</div>
+        <div class="book-alt"><em>Classical Drawing Atelier</em> — Juliette Aristides</div>
+        <div class="book-alt"><em>Vilppu Drawing Manual</em> — Glenn Vilppu</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="book-group">
+    <div class="book-group-label">Phase II — The Figure (Weeks 13-52)</div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Force: Dynamic Life Drawing for Animators</em> — Mike Mattesi</div>
+      <div class="book-note">Weeks 9-10 · gesture first, energy and direction before anatomy</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Vilppu Drawing Manual</em> — action and rhythm chapters</div>
+        <div class="book-alt"><em>Gesture Drawing for Animation</em> handout</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Anatomy for Sculptors</em> — Uldis Zarins & Sandis Kondrats</div>
+      <div class="book-note">Weeks 11-14 · modern visual atlas; primary anatomy reference</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Dynamic Anatomy</em> — Burne Hogarth — drawing-focused</div>
+        <div class="book-alt"><em>Anatomy: A Complete Guide for Artists</em> — Joseph Sheppard</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Vilppu Drawing Manual</em> — Glenn Vilppu</div>
+      <div class="book-note">Weeks 15-16 · figure as volume, the Disney tradition</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Drawing Lessons from the Great Masters</em> — Robert Beverly Hale</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Drawing the Head & Hands</em> — Andrew Loomis</div>
+      <div class="book-note">Weeks 17-18 · head construction (ball-with-jaw method)</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Drawing Atelier - The Figure</em> — Jon Demartin</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>The Book of a Hundred Hands</em> — George Bridgman</div>
+      <div class="book-note">Weeks 19-20 · hands as wedge plus block of fingers</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Drawing Dynamic Hands</em> — Burne Hogarth</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Dynamic Wrinkles and Drapery</em> — Burne Hogarth</div>
+      <div class="book-note">Weeks 21-22 · anchor-point system for drapery</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Drawing the Living Figure</em> — Sheppard — weeks 23-24, long pose</div>
+        <div class="book-alt"><em>Realistic Figure Drawing</em> — Joseph Sheppard</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="book-group">
+    <div class="book-group-label">Phase III — Light · Value · Color (Weeks 53-72)</div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Color and Light: A Guide for the Realist Painter</em> — James Gurney</div>
+      <div class="book-note">Weeks 27-30 · the single most important art instruction book of the last 20 years</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Color</em> (2nd ed) — David Hornung</div>
+        <div class="book-alt"><em>Contemporary Color Theory and Use</em> — Steven Bleicher</div>
+        <div class="book-alt"><em>Color Space and Its Divisions</em> — Rolf Kuehni — rigorous theory</div>
+        <div class="book-alt"><em>Color Vision and Colorimetry</em> — Daniel Malacara — physics side</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Successful Drawing</em> — Andrew Loomis</div>
+      <div class="book-note">Weeks 25-26 · value structure foundation</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Lessons in Classical Drawing</em> — Juliette Aristides</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Framed Ink</em> — Marcos Mateu-Mestre</div>
+      <div class="book-note">Weeks 31-32 · modern reference for narrative composition</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Fundamentals of Composition</em> — Vladimir Mogilevtsev</div>
+        <div class="book-alt"><em>Creative Illustration</em> — Andrew Loomis</div>
+        <div class="book-alt"><em>Composition of Outdoor Painting</em> — Edgar Payne</div>
+        <div class="book-alt"><em>Composition</em> — Arthur Wesley Dow</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>How to Render</em> — Scott Robertson</div>
+      <div class="book-note">Weeks 33-36 · the rendering bible for working designers</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Imaginative Realism</em> — James Gurney — rendering what doesn't exist</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="book-group">
+    <div class="book-group-label">Phase IV — Media Mastery (Weeks 73-84)</div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Pen & Ink Drawing Workbook</em> — Alphonso Dunn</div>
+      <div class="book-note">Weeks 37-38 · ink discipline and mark vocabulary</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Treasury of American Pen & Ink Illustration</em></div>
+        <div class="book-alt">Speedball Textbook (17th ed.)</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Watercolor Snacks</em> — Volta Voloshin-Smith</div>
+      <div class="book-note">Weeks 39-40 · accessible watercolor introduction</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Watercolour Secrets</em> — Bob Davies</div>
+        <div class="book-alt"><em>Best of Watercolor — Painting Texture</em> — Sara M. Doherty</div>
+        <div class="book-alt"><em>Carlson's Guide to Landscape Painting</em> — John F. Carlson</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Oil Painting Techniques and Materials</em> — Harold Speed</div>
+      <div class="book-note">Weeks 41-44 · classical foundation, written 1920s, still definitive</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Alla Prima</em> · <em>Alla Prima II</em> — Richard Schmid</div>
+        <div class="book-alt"><em>Oil Painting Essentials</em> · <em>Problem Solving for Oil Painters</em> — Gregg Kreutz</div>
+        <div class="book-alt"><em>Classical Painting Atelier</em> — Juliette Aristides</div>
+        <div class="book-alt"><em>The Landscape Painter's Workbook</em> — Mitchell Albala</div>
+        <div class="book-alt"><em>Palette Knife Painting</em> — Lisa Elley</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>DK Art School: An Introduction to Acrylics</em></div>
+      <div class="book-note">Bridge medium between watercolor and oil — opacity without long drying</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Art School: How to Paint Draw</em> — Hazel Harrison</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="book-group">
+    <div class="book-group-label">Phase V — Story & Sequential Art (Weeks 85-95)</div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Comics and Sequential Art</em> — Will Eisner</div>
+      <div class="book-note">Weeks 45-46 · foundation of comics theory</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Graphic Storytelling and Visual Narrative</em> — Eisner</div>
+        <div class="book-alt"><em>Framed Ink</em> — Mateu-Mestre</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>Cartooning the Head and Figure</em> — Jack Hamm</div>
+      <div class="book-note">Weeks 47-48 · expression and acting foundations</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Making Faces: Drawing Expressions for Comics</em> — 8Fish</div>
+        <div class="book-alt"><em>The Animator's Survival Kit</em> — Williams</div>
+      </div>
+    </div>
+
+    <div class="book-cluster">
+      <div class="book-primary"><em>The Animator's Survival Kit</em> — Richard Williams</div>
+      <div class="book-note">Animation principles applied to static panels</div>
+      <div class="book-alternatives">
+        <div class="book-alt"><em>Imaginative Realism</em> — Gurney — for design and worldbuilding</div>
+        <div class="book-alt"><em>The Skillful Huntsman</em> — Robertson/Yamada/Yoon</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 80px; margin-bottom: 8px; color: var(--primary-soft); text-align: center; font-size: 2rem;">Visual Reference</h3>
+  <p class="section-intro" style="text-align: center; margin-bottom: 40px;">For daily reference while working. Color wheels, value scales, hatching, perspective, head proportions, gesture, anatomy.</p>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Color · 12-Hue Wheel</div>
+    <div class="diagram-title">The Standard Color Wheel</div>
+    <svg class="diagram-svg" viewBox="0 0 400 400" width="400" height="400">
+      <g>
+        <path d="M 200 200 L 200 40 A 160 160 0 0 1 282.84 62.18 Z" fill="#E63946"/>
+        <path d="M 200 200 L 282.84 62.18 A 160 160 0 0 1 338.56 117.16 Z" fill="#F4845F"/>
+        <path d="M 200 200 L 338.56 117.16 A 160 160 0 0 1 360 200 Z" fill="#F4A261"/>
+        <path d="M 200 200 L 360 200 A 160 160 0 0 1 338.56 282.84 Z" fill="#E9C46A"/>
+        <path d="M 200 200 L 338.56 282.84 A 160 160 0 0 1 282.84 338.56 Z" fill="#A8C256"/>
+        <path d="M 200 200 L 282.84 338.56 A 160 160 0 0 1 200 360 Z" fill="#2A9D8F"/>
+        <path d="M 200 200 L 200 360 A 160 160 0 0 1 117.16 338.56 Z" fill="#21808C"/>
+        <path d="M 200 200 L 117.16 338.56 A 160 160 0 0 1 61.44 282.84 Z" fill="#264653"/>
+        <path d="M 200 200 L 61.44 282.84 A 160 160 0 0 1 40 200 Z" fill="#3D5A80"/>
+        <path d="M 200 200 L 40 200 A 160 160 0 0 1 61.44 117.16 Z" fill="#6F4E7C"/>
+        <path d="M 200 200 L 61.44 117.16 A 160 160 0 0 1 117.16 61.44 Z" fill="#9B2D7F"/>
+        <path d="M 200 200 L 117.16 61.44 A 160 160 0 0 1 200 40 Z" fill="#C9184A"/>
+      </g>
+      <circle cx="200" cy="200" r="55" fill="#1c1c25" stroke="#c9a961" stroke-width="1.5"/>
+      <polygon points="200,150 243,225 157,225" fill="none" stroke="#c9a961" stroke-width="1.5" opacity="0.7"/>
+      <text x="200" y="30" text-anchor="middle" fill="#f4e4a0" font-family="JetBrains Mono, monospace" font-size="10">R</text>
+      <text x="370" y="205" text-anchor="middle" fill="#f4e4a0" font-family="JetBrains Mono, monospace" font-size="10">Y</text>
+      <text x="200" y="380" text-anchor="middle" fill="#f4e4a0" font-family="JetBrains Mono, monospace" font-size="10">G</text>
+      <text x="30" y="205" text-anchor="middle" fill="#f4e4a0" font-family="JetBrains Mono, monospace" font-size="10">B</text>
+    </svg>
+    <div class="diagram-caption">Twelve-hue wheel. Primary triad (R-Y-B) shown in center triangle. Complements are diametrically opposite. Split-complement uses the two hues flanking the direct complement. Analogous schemes use 3-5 adjacent hues.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Value · 9-Step Scale</div>
+    <div class="diagram-title">Value Scale (Black to White)</div>
+    <svg class="diagram-svg" viewBox="0 0 540 100" width="540" height="100">
+      <rect x="0" y="20" width="60" height="60" fill="#000000"/>
+      <rect x="60" y="20" width="60" height="60" fill="#202020"/>
+      <rect x="120" y="20" width="60" height="60" fill="#404040"/>
+      <rect x="180" y="20" width="60" height="60" fill="#606060"/>
+      <rect x="240" y="20" width="60" height="60" fill="#808080"/>
+      <rect x="300" y="20" width="60" height="60" fill="#a0a0a0"/>
+      <rect x="360" y="20" width="60" height="60" fill="#c0c0c0"/>
+      <rect x="420" y="20" width="60" height="60" fill="#e0e0e0"/>
+      <rect x="480" y="20" width="60" height="60" fill="#ffffff"/>
+      <g font-family="JetBrains Mono, monospace" font-size="11" fill="#9a9485" text-anchor="middle">
+        <text x="30" y="95">1</text>
+        <text x="90" y="95">2</text>
+        <text x="150" y="95">3</text>
+        <text x="210" y="95">4</text>
+        <text x="270" y="95">5</text>
+        <text x="330" y="95">6</text>
+        <text x="390" y="95">7</text>
+        <text x="450" y="95">8</text>
+        <text x="510" y="95">9</text>
+      </g>
+      <text x="270" y="15" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">VALUE 1 → 9</text>
+    </svg>
+    <div class="diagram-caption">Most beginners use only the middle three values. Master paintings push toward the extremes. Squint at any subject — what you can still see is its value structure.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Mark-making · Ink and Pencil</div>
+    <div class="diagram-title">Hatching Vocabulary</div>
+    <svg class="diagram-svg" viewBox="0 0 600 220" width="600" height="220">
+      <defs>
+        <pattern id="hatch" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#e8e2d4" stroke-width="1"/>
+        </pattern>
+        <pattern id="crosshatch" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#e8e2d4" stroke-width="1"/>
+          <line x1="0" y1="0" x2="8" y2="0" stroke="#e8e2d4" stroke-width="1"/>
+        </pattern>
+        <pattern id="diaghatch" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#e8e2d4" stroke-width="1"/>
+        </pattern>
+        <pattern id="contour" x="0" y="0" width="20" height="8" patternUnits="userSpaceOnUse">
+          <path d="M 0 4 Q 5 0, 10 4 T 20 4" fill="none" stroke="#e8e2d4" stroke-width="1"/>
+        </pattern>
+        <pattern id="stipple" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+          <circle cx="3" cy="3" r="0.8" fill="#e8e2d4"/>
+        </pattern>
+      </defs>
+      <rect x="20" y="20" width="80" height="80" fill="url(#hatch)" stroke="#5a5648"/>
+      <text x="60" y="120" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Parallel</text>
+      <rect x="120" y="20" width="80" height="80" fill="url(#crosshatch)" stroke="#5a5648"/>
+      <text x="160" y="120" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Cross-hatch</text>
+      <rect x="220" y="20" width="80" height="80" fill="url(#diaghatch)" stroke="#5a5648"/>
+      <text x="260" y="120" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Diagonal</text>
+      <rect x="320" y="20" width="80" height="80" fill="url(#contour)" stroke="#5a5648"/>
+      <text x="360" y="120" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Contour</text>
+      <rect x="420" y="20" width="80" height="80" fill="url(#stipple)" stroke="#5a5648"/>
+      <text x="460" y="120" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Stipple</text>
+      <g transform="translate(20, 150)">
+        <line x1="0" y1="10" x2="80" y2="10" stroke="#e8e2d4" stroke-width="0.5"/>
+        <line x1="0" y1="18" x2="80" y2="18" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="0" y1="26" x2="80" y2="26" stroke="#e8e2d4" stroke-width="1.5"/>
+        <line x1="0" y1="36" x2="80" y2="36" stroke="#e8e2d4" stroke-width="2.5"/>
+        <line x1="0" y1="48" x2="80" y2="48" stroke="#e8e2d4" stroke-width="4"/>
+      </g>
+      <text x="60" y="215" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Line weight</text>
+      <rect x="120" y="150" width="80" height="50" fill="#e8e2d4" opacity="0.9"/>
+      <text x="160" y="215" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Solid black</text>
+      <rect x="220" y="150" width="40" height="50" fill="url(#crosshatch)" stroke="#5a5648"/>
+      <rect x="260" y="150" width="40" height="50" fill="#e8e2d4"/>
+      <text x="260" y="215" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Hatch + solid</text>
+    </svg>
+    <div class="diagram-caption">Hatch density controls value; direction controls form. Cross-hatching darkens further. Contour hatch (curving with the form) makes ink read three-dimensional. Stippling is slow but unmatched for texture variation.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Perspective · 1, 2, and 3 Point</div>
+    <div class="diagram-title">Vanishing Point Constructions</div>
+    <svg class="diagram-svg" viewBox="0 0 720 280" width="720" height="280">
+      <g transform="translate(0,0)">
+        <text x="120" y="20" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">ONE POINT</text>
+        <line x1="20" y1="140" x2="220" y2="140" stroke="#5a5648" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <text x="225" y="143" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">HL</text>
+        <circle cx="120" cy="140" r="3" fill="#d4af37"/>
+        <text x="120" y="155" text-anchor="middle" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">VP</text>
+        <rect x="60" y="170" width="60" height="60" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <line x1="60" y1="170" x2="120" y2="140" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="120" y1="170" x2="120" y2="140" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="120" y1="230" x2="120" y2="140" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="60" y1="230" x2="120" y2="140" stroke="#e8e2d4" stroke-width="1"/>
+        <text x="120" y="260" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">interiors · roads</text>
+      </g>
+      <g transform="translate(240,0)">
+        <text x="120" y="20" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">TWO POINT</text>
+        <line x1="0" y1="120" x2="240" y2="120" stroke="#5a5648" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <text x="245" y="123" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">HL</text>
+        <circle cx="20" cy="120" r="3" fill="#d4af37"/>
+        <text x="20" y="115" text-anchor="middle" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">VP1</text>
+        <circle cx="220" cy="120" r="3" fill="#d4af37"/>
+        <text x="220" y="115" text-anchor="middle" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">VP2</text>
+        <line x1="120" y1="160" x2="120" y2="240" stroke="#e8e2d4" stroke-width="1.5"/>
+        <line x1="120" y1="160" x2="20" y2="120" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="120" y1="160" x2="220" y2="120" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="120" y1="240" x2="20" y2="120" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="120" y1="240" x2="220" y2="120" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="70" y1="140" x2="70" y2="200" stroke="#e8e2d4" stroke-width="1.4"/>
+        <line x1="170" y1="140" x2="170" y2="200" stroke="#e8e2d4" stroke-width="1.4"/>
+        <text x="120" y="260" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">street corners</text>
+      </g>
+      <g transform="translate(480,0)">
+        <text x="120" y="20" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">THREE POINT</text>
+        <line x1="0" y1="100" x2="240" y2="100" stroke="#5a5648" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <text x="245" y="103" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">HL</text>
+        <circle cx="20" cy="100" r="3" fill="#d4af37"/>
+        <text x="20" y="95" text-anchor="middle" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">VP1</text>
+        <circle cx="220" cy="100" r="3" fill="#d4af37"/>
+        <text x="220" y="95" text-anchor="middle" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">VP2</text>
+        <circle cx="120" cy="260" r="3" fill="#d4af37"/>
+        <text x="120" y="275" text-anchor="middle" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">VP3</text>
+        <line x1="120" y1="130" x2="20" y2="100" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="120" y1="130" x2="220" y2="100" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="120" y1="130" x2="120" y2="260" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="70" y1="115" x2="100" y2="195" stroke="#e8e2d4" stroke-width="1.4"/>
+        <line x1="100" y1="195" x2="120" y2="260" stroke="#e8e2d4" stroke-width="1"/>
+        <line x1="170" y1="115" x2="140" y2="195" stroke="#e8e2d4" stroke-width="1.4"/>
+        <line x1="140" y1="195" x2="120" y2="260" stroke="#e8e2d4" stroke-width="1"/>
+      </g>
+    </svg>
+    <div class="diagram-caption">One-point for interiors and roads receding away. Two-point for street corners and buildings at ground level. Three-point for dramatic angles — VP3 above (worm's eye) or below (bird's eye) the page; verticals lean toward it.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Head Construction · Loomis Method</div>
+    <div class="diagram-title">Loomis Head Proportions</div>
+    <svg class="diagram-svg" viewBox="0 0 540 320" width="540" height="320">
+      <g transform="translate(40, 20)">
+        <text x="80" y="15" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">FRONT</text>
+        <ellipse cx="80" cy="100" rx="55" ry="65" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <path d="M 35 130 Q 35 200 80 230 Q 125 200 125 130" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <line x1="80" y1="35" x2="80" y2="230" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <line x1="30" y1="110" x2="130" y2="110" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <text x="155" y="113" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">brow</text>
+        <line x1="30" y1="165" x2="130" y2="165" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <text x="155" y="168" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">nose</text>
+        <line x1="35" y1="195" x2="125" y2="195" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <text x="155" y="198" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">mouth</text>
+        <text x="80" y="275" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">brow → nose → mouth → chin</text>
+        <text x="80" y="288" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">three equal divisions</text>
+      </g>
+      <g transform="translate(220, 20)">
+        <text x="80" y="15" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">SIDE</text>
+        <circle cx="70" cy="100" r="55" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <path d="M 30 135 Q 50 200 110 215 L 130 195 L 125 155 L 115 145" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <ellipse cx="95" cy="120" rx="6" ry="13" fill="none" stroke="#d4af37" stroke-width="0.8"/>
+        <text x="115" y="122" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">ear</text>
+        <line x1="20" y1="110" x2="125" y2="110" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <line x1="20" y1="165" x2="135" y2="165" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <line x1="20" y1="195" x2="130" y2="195" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <text x="80" y="275" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">ear between</text>
+        <text x="80" y="288" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">brow line and nose line</text>
+      </g>
+      <g transform="translate(400, 20)">
+        <text x="60" y="15" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">3/4 VIEW</text>
+        <ellipse cx="60" cy="100" rx="48" ry="62" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <path d="M 18 130 Q 30 195 75 225 Q 110 200 110 130" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <path d="M 75 40 Q 80 100, 75 225" fill="none" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <path d="M 18 108 Q 60 113 105 108" fill="none" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <path d="M 18 163 Q 60 168 105 163" fill="none" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <path d="M 22 193 Q 60 198 102 193" fill="none" stroke="#d4af37" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <text x="60" y="275" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">centerline curves</text>
+        <text x="60" y="288" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">around the form</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">Loomis ball-and-jaw method. Vertical centerline and horizontal feature lines (brow → nose → mouth) divide the face. Brow to chin in three equal parts. In any non-frontal view, the centerline and feature lines curve around the form — getting that curvature right is what makes the head three-dimensional.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Figure · Heads-Tall Proportions</div>
+    <div class="diagram-title">Standard Figure Proportions</div>
+    <svg class="diagram-svg" viewBox="0 0 540 360" width="540" height="360">
+      <g transform="translate(40, 20)">
+        <text x="60" y="15" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.15em">AVERAGE · 7.5</text>
+        <g stroke="#e8e2d4" stroke-width="1.2" fill="none">
+          <circle cx="60" cy="50" r="20"/>
+          <line x1="40" y1="70" x2="55" y2="100"/>
+          <line x1="80" y1="70" x2="65" y2="100"/>
+          <line x1="55" y1="100" x2="65" y2="100"/>
+          <line x1="60" y1="100" x2="60" y2="180"/>
+          <line x1="40" y1="125" x2="80" y2="125"/>
+          <line x1="40" y1="125" x2="35" y2="200"/>
+          <line x1="80" y1="125" x2="85" y2="200"/>
+          <line x1="60" y1="180" x2="45" y2="260"/>
+          <line x1="60" y1="180" x2="75" y2="260"/>
+          <line x1="45" y1="260" x2="42" y2="320"/>
+          <line x1="75" y1="260" x2="78" y2="320"/>
+        </g>
+        <g stroke="#d4af37" stroke-width="0.5" stroke-dasharray="3 2">
+          <line x1="0" y1="30" x2="120" y2="30"/>
+          <line x1="0" y1="70" x2="120" y2="70"/>
+          <line x1="0" y1="110" x2="120" y2="110"/>
+          <line x1="0" y1="150" x2="120" y2="150"/>
+          <line x1="0" y1="190" x2="120" y2="190"/>
+          <line x1="0" y1="230" x2="120" y2="230"/>
+          <line x1="0" y1="270" x2="120" y2="270"/>
+          <line x1="0" y1="320" x2="120" y2="320"/>
+        </g>
+        <text x="125" y="33" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="8">1 head</text>
+        <text x="125" y="113" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="8">chest</text>
+        <text x="125" y="153" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="8">elbow/navel</text>
+        <text x="125" y="193" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="8">crotch</text>
+        <text x="125" y="270" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="8">knees</text>
+        <text x="125" y="323" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="8">feet</text>
+      </g>
+      <g transform="translate(220, 20)">
+        <text x="60" y="15" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.15em">HEROIC · 8</text>
+        <g stroke="#e8e2d4" stroke-width="1.2" fill="none">
+          <circle cx="60" cy="45" r="19"/>
+          <line x1="38" y1="65" x2="55" y2="95"/>
+          <line x1="82" y1="65" x2="65" y2="95"/>
+          <line x1="60" y1="95" x2="60" y2="180"/>
+          <line x1="35" y1="120" x2="85" y2="120"/>
+          <line x1="35" y1="120" x2="30" y2="200"/>
+          <line x1="85" y1="120" x2="90" y2="200"/>
+          <line x1="60" y1="180" x2="42" y2="265"/>
+          <line x1="60" y1="180" x2="78" y2="265"/>
+          <line x1="42" y1="265" x2="40" y2="335"/>
+          <line x1="78" y1="265" x2="80" y2="335"/>
+        </g>
+      </g>
+      <g transform="translate(400, 20)">
+        <text x="60" y="15" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.15em">IDEALIZED · 8.5</text>
+        <g stroke="#e8e2d4" stroke-width="1.2" fill="none">
+          <circle cx="60" cy="42" r="18"/>
+          <line x1="38" y1="62" x2="55" y2="90"/>
+          <line x1="82" y1="62" x2="65" y2="90"/>
+          <line x1="60" y1="90" x2="60" y2="175"/>
+          <line x1="33" y1="115" x2="87" y2="115"/>
+          <line x1="33" y1="115" x2="28" y2="200"/>
+          <line x1="87" y1="115" x2="92" y2="200"/>
+          <line x1="60" y1="175" x2="40" y2="265"/>
+          <line x1="60" y1="175" x2="80" y2="265"/>
+          <line x1="40" y1="265" x2="37" y2="340"/>
+          <line x1="80" y1="265" x2="83" y2="340"/>
+        </g>
+      </g>
+    </svg>
+    <div class="diagram-caption">Average adult is 7.5 heads tall (Loomis). Heroic/comic-book proportions are 8 heads. Idealized fashion proportions are 8.5 heads. Key landmarks: nipples at 2 heads, navel at 3, crotch at 4, knees at 5.5-6, feet at 7.5-8.5.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Gesture · Force Lines</div>
+    <div class="diagram-title">Mattesi Force Direction</div>
+    <svg class="diagram-svg" viewBox="0 0 600 240" width="600" height="240">
+      <g transform="translate(0, 0)">
+        <text x="100" y="20" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">C-CURVE</text>
+        <path d="M 100 50 Q 130 130 80 200" fill="none" stroke="#d4af37" stroke-width="3"/>
+        <text x="100" y="225" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">simple curve · gravity · ease</text>
+      </g>
+      <g transform="translate(200, 0)">
+        <text x="100" y="20" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">S-CURVE</text>
+        <path d="M 100 50 Q 130 100 90 130 Q 60 160 110 200" fill="none" stroke="#d4af37" stroke-width="3"/>
+        <text x="100" y="225" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">opposing curves · contrapposto</text>
+      </g>
+      <g transform="translate(400, 0)">
+        <text x="100" y="20" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">REVERSE-C</text>
+        <path d="M 80 50 Q 50 130 110 200" fill="none" stroke="#d4af37" stroke-width="3"/>
+        <text x="100" y="225" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">muscular tension · effort</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">Mattesi's Force approach: every gesture has a directional rhythm before any anatomy. C-curves carry weight in one direction. S-curves create contrapposto. Reverse-C suggests muscular tension. Find the force line first; anatomy follows.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Hand Construction · Bridgman Method</div>
+    <div class="diagram-title">Hand as Wedge + Block of Fingers</div>
+    <svg class="diagram-svg" viewBox="0 0 540 260" width="540" height="260">
+      <g transform="translate(60, 20)">
+        <text x="80" y="15" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">PALM SIDE</text>
+        <polygon points="50,40 110,40 130,100 30,100" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <rect x="30" y="100" width="100" height="80" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <line x1="55" y1="100" x2="55" y2="180" stroke="#5a5648" stroke-width="0.8"/>
+        <line x1="80" y1="100" x2="80" y2="180" stroke="#5a5648" stroke-width="0.8"/>
+        <line x1="105" y1="100" x2="105" y2="180" stroke="#5a5648" stroke-width="0.8"/>
+        <polygon points="50,55 30,75 15,115 35,130 50,90" fill="none" stroke="#d4af37" stroke-width="1.4"/>
+        <text x="155" y="60" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">wedge</text>
+        <text x="155" y="73" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">(palm)</text>
+        <text x="155" y="130" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">block</text>
+        <text x="155" y="143" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">(fingers)</text>
+        <text x="0" y="115" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">thumb</text>
+        <text x="80" y="225" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">middle finger length</text>
+        <text x="80" y="238" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">≈ palm length</text>
+      </g>
+      <g transform="translate(300, 20)">
+        <text x="80" y="15" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.2em">CURLED / GRIP</text>
+        <polygon points="40,40 110,40 120,100 30,100" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <path d="M 30 100 L 35 130 L 70 145 L 80 130 Q 75 110 60 105" fill="none" stroke="#e8e2d4" stroke-width="1.4"/>
+        <path d="M 60 100 L 60 130 L 90 145 L 95 125" fill="none" stroke="#e8e2d4" stroke-width="0.8"/>
+        <path d="M 80 100 L 78 125 L 105 138 L 108 120" fill="none" stroke="#e8e2d4" stroke-width="0.8"/>
+        <polygon points="40,55 20,75 30,110 50,110 50,80" fill="none" stroke="#d4af37" stroke-width="1.4"/>
+        <text x="80" y="225" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">fingers in 3 segments</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">Bridgman's method: hand = palm wedge + block of four fingers + opposing thumb (separate wedge). Each finger has three segments that curl at each knuckle. Middle finger length roughly equals palm length. Drill until automatic — hands are where most figures fail.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Composition · Templates</div>
+    <div class="diagram-title">Compositional Frameworks</div>
+    <svg class="diagram-svg" viewBox="0 0 720 240" width="720" height="240">
+      <g transform="translate(20, 20)">
+        <text x="80" y="14" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.15em">RULE OF THIRDS</text>
+        <rect x="20" y="20" width="120" height="160" fill="none" stroke="#e8e2d4" stroke-width="1.2"/>
+        <line x1="20" y1="73" x2="140" y2="73" stroke="#d4af37" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <line x1="20" y1="127" x2="140" y2="127" stroke="#d4af37" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <line x1="60" y1="20" x2="60" y2="180" stroke="#d4af37" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <line x1="100" y1="20" x2="100" y2="180" stroke="#d4af37" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <circle cx="60" cy="73" r="3" fill="#d4af37"/>
+        <circle cx="100" cy="73" r="3" fill="#d4af37"/>
+        <circle cx="60" cy="127" r="3" fill="#d4af37"/>
+        <circle cx="100" cy="127" r="3" fill="#d4af37"/>
+        <text x="80" y="205" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">subject on intersections</text>
+      </g>
+      <g transform="translate(200, 20)">
+        <text x="80" y="14" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.15em">GOLDEN RATIO</text>
+        <rect x="20" y="20" width="160" height="100" fill="none" stroke="#e8e2d4" stroke-width="1.2"/>
+        <rect x="20" y="20" width="100" height="100" fill="none" stroke="#d4af37" stroke-width="0.7"/>
+        <rect x="120" y="20" width="60" height="60" fill="none" stroke="#d4af37" stroke-width="0.7"/>
+        <rect x="120" y="80" width="40" height="40" fill="none" stroke="#d4af37" stroke-width="0.7"/>
+        <path d="M 120 20 A 60 60 0 0 1 180 80" fill="none" stroke="#d4af37" stroke-width="1.2"/>
+        <text x="100" y="155" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">φ = 1.618</text>
+      </g>
+      <g transform="translate(380, 20)">
+        <text x="80" y="14" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.15em">DYNAMIC SYM</text>
+        <rect x="20" y="20" width="140" height="160" fill="none" stroke="#e8e2d4" stroke-width="1.2"/>
+        <line x1="20" y1="20" x2="160" y2="180" stroke="#d4af37" stroke-width="0.7"/>
+        <line x1="160" y1="20" x2="20" y2="180" stroke="#d4af37" stroke-width="0.7"/>
+        <line x1="90" y1="20" x2="20" y2="180" stroke="#d4af37" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <line x1="90" y1="20" x2="160" y2="180" stroke="#d4af37" stroke-width="0.7" stroke-dasharray="3 2"/>
+        <text x="90" y="205" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">Hambidge armatures</text>
+      </g>
+      <g transform="translate(560, 20)">
+        <text x="80" y="14" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.15em">PAYNE'S MASSES</text>
+        <rect x="20" y="20" width="140" height="160" fill="none" stroke="#e8e2d4" stroke-width="1.2"/>
+        <polygon points="40,160 140,160 110,40" fill="none" stroke="#d4af37" stroke-width="1.5"/>
+        <text x="90" y="125" text-anchor="middle" fill="#d4af37" font-family="JetBrains Mono, monospace" font-size="9">mass</text>
+        <text x="90" y="205" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">interlocking shapes</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">Four classical composition systems. Rule of thirds places subjects on intersections. Golden ratio (φ ≈ 1.618) guides the eye through a Fibonacci spiral. Dynamic symmetry uses diagonal armatures (Hambidge, Bouleau). Payne's masses organize the image as interlocking large shapes. Most accomplished compositions use more than one.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Watercolor · Wet / Dry Technique</div>
+    <div class="diagram-title">Watercolor Wash Types</div>
+    <svg class="diagram-svg" viewBox="0 0 600 180" width="600" height="180">
+      <defs>
+        <linearGradient id="flatwash" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#3D5A80" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#3D5A80" stop-opacity="0.6"/>
+        </linearGradient>
+        <linearGradient id="gradedwash" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#3D5A80" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#3D5A80" stop-opacity="0.1"/>
+        </linearGradient>
+        <radialGradient id="wetonwet" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#9B2D7F" stop-opacity="0.7"/>
+          <stop offset="60%" stop-color="#3D5A80" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#3D5A80" stop-opacity="0.1"/>
+        </radialGradient>
+      </defs>
+      <rect x="20" y="20" width="120" height="100" fill="url(#flatwash)" stroke="#5a5648"/>
+      <text x="80" y="140" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Flat wash</text>
+      <text x="80" y="155" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">even tone</text>
+      <rect x="160" y="20" width="120" height="100" fill="url(#gradedwash)" stroke="#5a5648"/>
+      <text x="220" y="140" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Graded wash</text>
+      <text x="220" y="155" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">dark to light</text>
+      <rect x="300" y="20" width="120" height="100" fill="url(#wetonwet)" stroke="#5a5648"/>
+      <text x="360" y="140" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Wet-on-wet</text>
+      <text x="360" y="155" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">colors bleed · soft edges</text>
+      <rect x="440" y="20" width="120" height="100" fill="#3D5A80" fill-opacity="0.4" stroke="#5a5648"/>
+      <path d="M 460 40 Q 480 50 490 70 Q 500 85 480 100" fill="none" stroke="#9B2D7F" stroke-width="2.5" opacity="0.9"/>
+      <path d="M 510 45 L 540 65 L 525 95" fill="none" stroke="#E63946" stroke-width="2.5" opacity="0.9"/>
+      <text x="500" y="140" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="10">Wet-on-dry</text>
+      <text x="500" y="155" text-anchor="middle" fill="#9a9485" font-family="JetBrains Mono, monospace" font-size="9">hard edges · control</text>
+    </svg>
+    <div class="diagram-caption">Flat wash: even tone. Graded wash: smooth dark-to-light transition. Wet-on-wet: soft edges, watercolor's signature look. Wet-on-dry: hard edges and control. Most paintings combine all four — wet-on-wet for atmosphere, wet-on-dry for foreground detail.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Oil Paint · Drying Times</div>
+    <div class="diagram-title">Oil Color Drying Rates</div>
+    <svg class="diagram-svg" viewBox="0 0 600 260" width="600" height="260">
+      <g font-family="JetBrains Mono, monospace" fill="#e8e2d4">
+        <text x="30" y="30" font-size="11" fill="#c9a961" letter-spacing="0.15em">FAST (1-2 days)</text>
+        <g transform="translate(30, 40)">
+          <rect x="0" y="0" width="22" height="22" fill="#8B4513"/>
+          <text x="30" y="16" font-size="10">Burnt umber</text>
+          <rect x="0" y="28" width="22" height="22" fill="#704214"/>
+          <text x="30" y="44" font-size="10">Raw umber</text>
+          <rect x="0" y="56" width="22" height="22" fill="#A0522D"/>
+          <text x="30" y="72" font-size="10">Burnt sienna</text>
+          <rect x="0" y="84" width="22" height="22" fill="#CD853F"/>
+          <text x="30" y="100" font-size="10">Raw sienna</text>
+          <rect x="0" y="112" width="22" height="22" fill="#F2D9B6"/>
+          <text x="30" y="128" font-size="10">Naples yellow</text>
+        </g>
+        <text x="230" y="30" font-size="11" fill="#c9a961" letter-spacing="0.15em">MEDIUM (3-5 days)</text>
+        <g transform="translate(230, 40)">
+          <rect x="0" y="0" width="22" height="22" fill="#0E2542"/>
+          <text x="30" y="16" font-size="10">Prussian blue</text>
+          <rect x="0" y="28" width="22" height="22" fill="#2E5A88"/>
+          <text x="30" y="44" font-size="10">Ultramarine</text>
+          <rect x="0" y="56" width="22" height="22" fill="#3E5F4C"/>
+          <text x="30" y="72" font-size="10">Viridian</text>
+          <rect x="0" y="84" width="22" height="22" fill="#212223"/>
+          <text x="30" y="100" font-size="10">Ivory black</text>
+          <rect x="0" y="112" width="22" height="22" fill="#F8F8F8"/>
+          <text x="30" y="128" font-size="10">Titanium white</text>
+        </g>
+        <text x="430" y="30" font-size="11" fill="#c9a961" letter-spacing="0.15em">SLOW (week+)</text>
+        <g transform="translate(430, 40)">
+          <rect x="0" y="0" width="22" height="22" fill="#DC1E2E"/>
+          <text x="30" y="16" font-size="10">Cadmium red</text>
+          <rect x="0" y="28" width="22" height="22" fill="#E4A11B"/>
+          <text x="30" y="44" font-size="10">Cadmium yellow</text>
+          <rect x="0" y="56" width="22" height="22" fill="#9F1239"/>
+          <text x="30" y="72" font-size="10">Alizarin crimson</text>
+          <rect x="0" y="84" width="22" height="22" fill="#841515"/>
+          <text x="30" y="100" font-size="10">Permanent rose</text>
+          <rect x="0" y="112" width="22" height="22" fill="#E0E0E0"/>
+          <text x="30" y="128" font-size="10">Zinc white</text>
+        </g>
+        <text x="300" y="220" text-anchor="middle" font-size="11" fill="#9a9485" font-style="italic">
+          fat over lean · slow-dry over fast-dry · oil over solvent
+        </text>
+        <text x="300" y="240" text-anchor="middle" font-size="10" fill="#9a9485">
+          violating this causes cracking when underlayer dries faster than top
+        </text>
+      </g>
+    </svg>
+    <div class="diagram-caption">Oil drying times vary dramatically by pigment. Earth colors dry in days; cadmiums and alizarin take a week+. "Fat over lean" rule: each layer should have more oil than the one beneath. Build paintings from fast-drying underpainting upward. Standard underpainting: raw umber or burnt sienna with solvent.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Animation · 12 Principles</div>
+    <div class="diagram-title">Disney's 12 Principles of Animation</div>
+    <svg class="diagram-svg" viewBox="0 0 720 280" width="720" height="280">
+      <g font-family="JetBrains Mono, monospace" font-size="10" fill="#e8e2d4">
+        <rect x="20" y="20" width="160" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="100" y="40" text-anchor="middle" fill="#f4e4a0" font-weight="700">1. Squash &amp; Stretch</text>
+        <text x="100" y="58" text-anchor="middle" fill="#9a9485" font-size="9">volume preserves · weight</text>
+        <rect x="200" y="20" width="160" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="280" y="40" text-anchor="middle" fill="#f4e4a0" font-weight="700">2. Anticipation</text>
+        <text x="280" y="58" text-anchor="middle" fill="#9a9485" font-size="9">windup before action</text>
+        <rect x="380" y="20" width="160" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="460" y="40" text-anchor="middle" fill="#f4e4a0" font-weight="700">3. Staging</text>
+        <text x="460" y="58" text-anchor="middle" fill="#9a9485" font-size="9">clear visual reading</text>
+        <rect x="560" y="20" width="140" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="630" y="40" text-anchor="middle" fill="#f4e4a0" font-weight="700">4. Straight Ahead /</text>
+        <text x="630" y="56" text-anchor="middle" fill="#f4e4a0" font-weight="700">Pose to Pose</text>
+        <rect x="20" y="86" width="160" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="100" y="106" text-anchor="middle" fill="#f4e4a0" font-weight="700">5. Follow Through &amp;</text>
+        <text x="100" y="122" text-anchor="middle" fill="#f4e4a0" font-weight="700">Overlapping Action</text>
+        <rect x="200" y="86" width="160" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="280" y="106" text-anchor="middle" fill="#f4e4a0" font-weight="700">6. Slow In, Slow Out</text>
+        <text x="280" y="124" text-anchor="middle" fill="#9a9485" font-size="9">eases at start &amp; end</text>
+        <rect x="380" y="86" width="160" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="460" y="106" text-anchor="middle" fill="#f4e4a0" font-weight="700">7. Arcs</text>
+        <text x="460" y="124" text-anchor="middle" fill="#9a9485" font-size="9">natural motion curves</text>
+        <rect x="560" y="86" width="140" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="630" y="106" text-anchor="middle" fill="#f4e4a0" font-weight="700">8. Secondary Action</text>
+        <text x="630" y="124" text-anchor="middle" fill="#9a9485" font-size="9">supports primary</text>
+        <rect x="20" y="152" width="160" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="100" y="172" text-anchor="middle" fill="#f4e4a0" font-weight="700">9. Timing</text>
+        <text x="100" y="190" text-anchor="middle" fill="#9a9485" font-size="9">frames per action</text>
+        <rect x="200" y="152" width="160" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="280" y="172" text-anchor="middle" fill="#f4e4a0" font-weight="700">10. Exaggeration</text>
+        <text x="280" y="190" text-anchor="middle" fill="#9a9485" font-size="9">push past realism</text>
+        <rect x="380" y="152" width="160" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="460" y="172" text-anchor="middle" fill="#f4e4a0" font-weight="700">11. Solid Drawing</text>
+        <text x="460" y="190" text-anchor="middle" fill="#9a9485" font-size="9">three-dimensional weight</text>
+        <rect x="560" y="152" width="140" height="56" fill="#1c1c25" stroke="#c9a961"/>
+        <text x="630" y="172" text-anchor="middle" fill="#f4e4a0" font-weight="700">12. Appeal</text>
+        <text x="630" y="190" text-anchor="middle" fill="#9a9485" font-size="9">readable · alive</text>
+        <text x="360" y="245" text-anchor="middle" font-style="italic" fill="#9a9485">From Frank Thomas &amp; Ollie Johnston, The Illusion of Life (1981)</text>
+        <text x="360" y="262" text-anchor="middle" font-size="9" fill="#9a9485">Applied to static panels: timing through panel size · exaggeration through pose</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">Even if you never animate, the 12 principles improve your comic and illustration work. Comics is animation with the in-betweens missing — the reader fills them in. Williams' Animator's Survival Kit is the bible; the principles originate with Thomas &amp; Johnston's Illusion of Life. Panel timing is the equivalent of frame timing — bigger panels read slower.</div>
+  </div>
+
+  <div class="diagram-block">
+    <div class="diagram-label">Comics · McCloud Transitions</div>
+    <div class="diagram-title">Six Panel Transitions</div>
+    <svg class="diagram-svg" viewBox="0 0 700 280" width="700" height="280">
+      <g font-family="JetBrains Mono, monospace" font-size="9" fill="#e8e2d4">
+        <rect x="20" y="20" width="100" height="80" fill="#1c1c25" stroke="#c9a961" stroke-width="1.2"/>
+        <text x="70" y="44" text-anchor="middle" fill="#c9a961" font-size="11" letter-spacing="0.1em">1.</text>
+        <text x="70" y="120" text-anchor="middle" fill="#f4e4a0" font-weight="700">Moment-to-moment</text>
+        <text x="70" y="135" text-anchor="middle" fill="#9a9485">tiny change · intimacy</text>
+        <rect x="140" y="20" width="100" height="80" fill="#1c1c25" stroke="#c9a961" stroke-width="1.2"/>
+        <text x="190" y="44" text-anchor="middle" fill="#c9a961" font-size="11" letter-spacing="0.1em">2.</text>
+        <text x="190" y="120" text-anchor="middle" fill="#f4e4a0" font-weight="700">Action-to-action</text>
+        <text x="190" y="135" text-anchor="middle" fill="#9a9485">same subject · distinct action</text>
+        <rect x="260" y="20" width="100" height="80" fill="#1c1c25" stroke="#c9a961" stroke-width="1.2"/>
+        <text x="310" y="44" text-anchor="middle" fill="#c9a961" font-size="11" letter-spacing="0.1em">3.</text>
+        <text x="310" y="120" text-anchor="middle" fill="#f4e4a0" font-weight="700">Subject-to-subject</text>
+        <text x="310" y="135" text-anchor="middle" fill="#9a9485">different subject · same scene</text>
+        <rect x="380" y="20" width="100" height="80" fill="#1c1c25" stroke="#c9a961" stroke-width="1.2"/>
+        <text x="430" y="44" text-anchor="middle" fill="#c9a961" font-size="11" letter-spacing="0.1em">4.</text>
+        <text x="430" y="120" text-anchor="middle" fill="#f4e4a0" font-weight="700">Scene-to-scene</text>
+        <text x="430" y="135" text-anchor="middle" fill="#9a9485">significant time / space</text>
+        <rect x="500" y="20" width="100" height="80" fill="#1c1c25" stroke="#c9a961" stroke-width="1.2"/>
+        <text x="550" y="44" text-anchor="middle" fill="#c9a961" font-size="11" letter-spacing="0.1em">5.</text>
+        <text x="550" y="120" text-anchor="middle" fill="#f4e4a0" font-weight="700">Aspect-to-aspect</text>
+        <text x="550" y="135" text-anchor="middle" fill="#9a9485">place / mood · manga</text>
+        <rect x="310" y="170" width="100" height="80" fill="#1c1c25" stroke="#c9a961" stroke-width="1.2"/>
+        <text x="360" y="194" text-anchor="middle" fill="#c9a961" font-size="11" letter-spacing="0.1em">6.</text>
+        <text x="360" y="270" text-anchor="middle" fill="#f4e4a0" font-weight="700">Non-sequitur</text>
+      </g>
+    </svg>
+    <div class="diagram-caption">McCloud's transition taxonomy from Understanding Comics (1993). Western comics lean heavily on 2-4. Manga uses 5 (aspect-to-aspect) far more — it builds atmosphere by fragmenting a single moment across panels. Type 6 is rare and usually deliberate. Knowing the type tells you what work the gutter is doing.</div>
+  </div>
+
+</section>
+
+<div class="closing">
+
+  <p>This is a map, not an assignment.</p>
+  <p>Pick one or two from any category that calls to you, work through them, let what you learn guide the next pick. The cross-references between tracks matter more than the depth of any single track — the synthesis project lives in the crossings.</p>
+  <p style="margin-top: 24px; color: var(--accent);">✦</p>
+</div>
+
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#1c1c25',
+      primaryTextColor: '#f4e4a0',
+      primaryBorderColor: '#c9a961',
+      lineColor: '#8a7440',
+      secondaryColor: '#2a2418',
+      tertiaryColor: '#14141a',
+      background: '#0a0a0c',
+      mainBkg: '#1c1c25',
+      secondBkg: '#2a2418',
+      tertiaryBkg: '#14141a',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: '13px'
+    },
+    flowchart: {
+      htmlLabels: true,
+      curve: 'basis',
+      padding: 20,
+      nodeSpacing: 50,
+      rankSpacing: 60
+    }
+  });
+</script>
+
+
+
+</body>
+</html>
